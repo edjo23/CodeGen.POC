@@ -1,12 +1,14 @@
 
-## Code generation model
+
+Code generation model
 
 Entity
 > EntityClass
-> DataInterface
 > DataClass
-> DataServiceInterface
+> DataInterface
 > DataServiceClass
-> ManagerInterface
+> DataServiceInterface
 > ManagerClass
+> ManagerInterface
 > ControllerClass
+
