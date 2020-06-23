@@ -1,19 +1,15 @@
-﻿using CodeGen.Data;
-using CodeGen.Models;
+﻿using CodeGen.Models;
 using CodeGen.Renderers;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace CodeGen.Generators
 {
-    public class DataServiceInterfaceCodeGenerateOptions : CodeGenerateOptions { }
+    public class EntityDataServiceCodeGenerateOptions : CodeGenerateOptions { }
 
-    public class DataServiceInterfaceCodeGenerator : IGenerator
+    public class EntityDataServiceCodeGenerator : IGenerator
     {
-        public DataServiceInterfaceCodeGenerator(DataServiceInterfaceCodeGenerateOptions options, ITemplateProvider templateProvider, ICodeGenerationModelProvider domainDataProvider, IRenderer renderer, IOutputService outputService)
+        public EntityDataServiceCodeGenerator(EntityDataServiceCodeGenerateOptions options, ITemplateProvider templateProvider, ICodeGenerationModelProvider domainDataProvider, IRenderer renderer, IOutputService outputService)
         {
             Options = options;
             TemplateProvider = templateProvider;
@@ -22,7 +18,7 @@ namespace CodeGen.Generators
             OutputService = outputService;
         }
 
-        public DataServiceInterfaceCodeGenerateOptions Options { get; set; }
+        public EntityDataServiceCodeGenerateOptions Options { get; set; }
         public ITemplateProvider TemplateProvider { get; set; }
         public ICodeGenerationModelProvider DomainDataProvider { get; set; }
         public IRenderer Renderer { get; set; }
@@ -32,11 +28,11 @@ namespace CodeGen.Generators
         {
             var data = DomainDataProvider.GetData();
 
-            foreach (var entity in data.Entities.Where(o => o.DataServiceInterface != null))
+            foreach (var entity in data.Entities.Where(o => o.DataServiceClass != null))
             {
                 var output = Renderer.Render(entity, TemplateProvider.GetTemplate(Options.TemplatePath));
                 var directoryInfo = new DirectoryInfo(Options.TargetPath);
-                OutputService.Write(Path.Join(directoryInfo.FullName, $"{entity.DataServiceInterface.Name}.cs"), output);
+                OutputService.Write(Path.Join(directoryInfo.FullName, $"{entity.DataServiceClass.Name}.cs"), output);
             }
         }
     }

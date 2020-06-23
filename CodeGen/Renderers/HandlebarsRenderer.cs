@@ -1,11 +1,7 @@
-﻿using CodeGen.Data;
-using CodeGen.Models;
-using HandlebarsDotNet;
+﻿using HandlebarsDotNet;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace CodeGen.Renderers
 {

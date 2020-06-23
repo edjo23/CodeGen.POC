@@ -87,28 +87,28 @@ namespace CodeGen
                         { "AppName", "TestService" },
 
                         { "Generator:Entity:TemplatePath", "Templates/Entity_cs.hb" },
-                        { "Generator:Entity:TargetPath", "../../../../TestService/Entities/Generated" },
+                        { "Generator:Entity:TargetPath", "../../../../$()/Entities/Generated" },
 
-                        { "Generator:IData:TemplatePath", "Templates/DataInterface_cs.hb" },
-                        { "Generator:IData:TargetPath", "../../../../TestService/Business/Data/Generated" },
-                        { "Generator:Data:TemplatePath", "Templates/Data_cs.hb" },
-                        { "Generator:Data:TargetPath", "../../../../TestService/Business/Data/Generated" },
+                        { "Generator:IData:TemplatePath", "Templates/EntityDataInterface_cs.hb" },
+                        { "Generator:IData:TargetPath", "../../../../$()/Business/Data/Generated" },
+                        { "Generator:Data:TemplatePath", "Templates/EntityData_cs.hb" },
+                        { "Generator:Data:TargetPath", "../../../../$()/Business/Data/Generated" },
 
-                        { "Generator:IDataService:TemplatePath", "Templates/DataSvcInterface_cs.hb" },
-                        { "Generator:IDataService:TargetPath", "../../../../TestService/Business/DataSvc/Generated" },
-                        { "Generator:DataService:TemplatePath", "Templates/DataSvc_cs.hb" },
-                        { "Generator:DataService:TargetPath", "../../../../TestService/Business/DataSvc/Generated" },
+                        { "Generator:IDataService:TemplatePath", "Templates/EntityDataSvcInterface_cs.hb" },
+                        { "Generator:IDataService:TargetPath", "../../../../$()/Business/DataSvc/Generated" },
+                        { "Generator:DataService:TemplatePath", "Templates/EntityDataSvc_cs.hb" },
+                        { "Generator:DataService:TargetPath", "../../../../$()/Business/DataSvc/Generated" },
 
                         { "Generator:IEntityManager:TemplatePath", "Templates/EntityManagerInterface_cs.hb" },
-                        { "Generator:IEntityManager:TargetPath", "../../../../TestService/Business/Generated" },
+                        { "Generator:IEntityManager:TargetPath", "../../../../$()/Business/Generated" },
                         { "Generator:EntityManager:TemplatePath", "Templates/EntityManager_cs.hb" },
-                        { "Generator:EntityManager:TargetPath", "../../../../TestService/Business/Generated" },
+                        { "Generator:EntityManager:TargetPath", "../../../../$()/Business/Generated" },
 
-                        { "Generator:Controller:TemplatePath", "Templates/Controller_cs.hb" },
-                        { "Generator:Controller:TargetPath", "../../../../TestService/Controllers/Generated" },
+                        { "Generator:Controller:TemplatePath", "Templates/EntityWebApiController_cs.hb" },
+                        { "Generator:Controller:TargetPath", "../../../../$()/Controllers/Generated" },
 
                         { "Generator:ServiceCollectionExtension:TemplatePath", "Templates/ServiceCollectionExtension_cs.hb" },
-                        { "Generator:ServiceCollectionExtension:TargetPath", "../../../../TestService/Generated" },
+                        { "Generator:ServiceCollectionExtension:TargetPath", "../../../../$()/Generated" },
                     })
                     .AddJsonFile("appsettings.json");
                 return cb.Build();
@@ -123,17 +123,17 @@ namespace CodeGen
             serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:Entity", new EntityCodeGenerateOptions()));
             serviceCollection.AddTransient<EntityCodeGenerator>();
 
-            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:IData", new DataInterfaceCodeGenerateOptions()));
-            serviceCollection.AddTransient<DataInterfaceCodeGenerator>();
+            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:IData", new EntityDataInterfaceCodeGenerateOptions()));
+            serviceCollection.AddTransient<EntityDataInterfaceCodeGenerator>();
 
-            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:Data", new DataCodeGenerateOptions()));
-            serviceCollection.AddTransient<DataCodeGenerator>();
+            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:Data", new EntityDataCodeGenerateOptions()));
+            serviceCollection.AddTransient<EntityDataCodeGenerator>();
 
-            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:IDataService", new DataServiceInterfaceCodeGenerateOptions()));
-            serviceCollection.AddTransient<DataServiceInterfaceCodeGenerator>();
+            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:IDataService", new EntityDataServiceInterfaceCodeGenerateOptions()));
+            serviceCollection.AddTransient<EntityDataServiceInterfaceCodeGenerator>();
 
-            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:DataService", new DataServiceCodeGenerateOptions()));
-            serviceCollection.AddTransient<DataServiceCodeGenerator>();
+            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:DataService", new EntityDataServiceCodeGenerateOptions()));
+            serviceCollection.AddTransient<EntityDataServiceCodeGenerator>();
 
             serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:IEntityManager", new EntityManagerInterfaceCodeGenerateOptions()));
             serviceCollection.AddTransient<EntityManagerInterfaceCodeGenerator>();
@@ -141,8 +141,8 @@ namespace CodeGen
             serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:EntityManager", new EntityManagerCodeGenerateOptions()));
             serviceCollection.AddTransient<EntityManagerCodeGenerator>();
 
-            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:Controller", new ControllerCodeGenerateOptions()));
-            serviceCollection.AddTransient<ControllerCodeGenerator>();
+            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:Controller", new EntityWebApiControllerCodeGenerateOptions()));
+            serviceCollection.AddTransient<EntityWebApiControllerCodeGenerator>();
 
             serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:ServiceCollectionExtension", new ServiceCollectionExtensionCodeGenerateOptions()));
             serviceCollection.AddSingleton<ServiceCollectionExtensionsModelProvider>();

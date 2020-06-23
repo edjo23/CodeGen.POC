@@ -1,11 +1,6 @@
-﻿using CodeGen.Data;
-using CodeGen.Models;
+﻿using CodeGen.Models;
 using CodeGen.Renderers;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace CodeGen.Generators
 {

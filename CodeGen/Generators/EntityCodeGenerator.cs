@@ -1,12 +1,7 @@
-﻿using CodeGen.Data;
+﻿using CodeGen.Generators;
 using CodeGen.Models;
-using CodeGen.Generators;
 using CodeGen.Renderers;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace CodeGen.Artifacts
 {

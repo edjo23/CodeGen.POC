@@ -1,19 +1,15 @@
-﻿using CodeGen.Data;
-using CodeGen.Models;
+﻿using CodeGen.Models;
 using CodeGen.Renderers;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace CodeGen.Generators
 {
-    public class ControllerCodeGenerateOptions : CodeGenerateOptions { }
+    public class EntityWebApiControllerCodeGenerateOptions : CodeGenerateOptions { }
 
-    public class ControllerCodeGenerator : IGenerator
+    public class EntityWebApiControllerCodeGenerator : IGenerator
     {
-        public ControllerCodeGenerator(ControllerCodeGenerateOptions options, ITemplateProvider templateProvider, ICodeGenerationModelProvider domainDataProvider, IRenderer renderer, IOutputService outputService)
+        public EntityWebApiControllerCodeGenerator(EntityWebApiControllerCodeGenerateOptions options, ITemplateProvider templateProvider, ICodeGenerationModelProvider domainDataProvider, IRenderer renderer, IOutputService outputService)
         {
             Options = options;
             TemplateProvider = templateProvider;
@@ -22,7 +18,7 @@ namespace CodeGen.Generators
             OutputService = outputService;
         }
 
-        public ControllerCodeGenerateOptions Options { get; set; }
+        public EntityWebApiControllerCodeGenerateOptions Options { get; set; }
         public ITemplateProvider TemplateProvider { get; set; }
         public ICodeGenerationModelProvider DomainDataProvider { get; set; }
         public IRenderer Renderer { get; set; }
