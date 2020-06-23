@@ -13,7 +13,7 @@ namespace Demo.Service.Business.Data
 {
     public partial class PersonData : IPersonData
     {
-        public PersonData(IDataStorage dataStorage)
+        private PersonData(IDataStorage dataStorage)
         {
             _dataStorage = dataStorage;
         }

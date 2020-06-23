@@ -27,7 +27,9 @@ namespace CodeGen.Data
         public bool PartialManager { get; set; }
         public bool PrivateManagerConstructor { get; set; }
         public bool PartialDataSvc { get; set; }
+        public bool PrivateDataSvcConstructor { get; set; }
         public bool PartialData { get; set; }
+        public bool PrivateDataConstructor { get; set; }
         public bool DataSvcCaching { get; set; } = true;
         public bool? EventPublish { get; set; } = true;
         public string Validator { get; set; }

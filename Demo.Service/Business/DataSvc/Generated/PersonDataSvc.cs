@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Service.Business.DataSvc
 {
-    public class PersonDataSvc : IPersonDataSvc
+    public partial class PersonDataSvc : IPersonDataSvc
     {
-        public PersonDataSvc(IPersonData data)
+        private PersonDataSvc(IPersonData data)
         {
             _data = data;
         }
@@ -24,6 +24,11 @@ namespace Demo.Service.Business.DataSvc
         #region Private
 
         private readonly IPersonData _data;
+        private Func<Person, Task>? _OnAfterCreateAsync;
+        private Func<Person?, Guid, Task>? _OnAfterGetAsync;
+        private Func<Person, Task>? _OnAfterUpdateAsync;
+        private Func<Guid, Task> _OnAfterDeleteAsync;
+        private Func<PersonCollectionResult, PersonArgs, PagingArgs?, Task>? _OnAfterGetByArgsAsync;
 
         #endregion
 
@@ -34,6 +39,7 @@ namespace Demo.Service.Business.DataSvc
                 var __result = await _data.CreateAsync(Check.NotNull(value, nameof(value))).ConfigureAwait(false);
                 await Beef.Events.Event.PublishValueEventAsync(__result, "Person", "Created").ConfigureAwait(false);;
                 ExecutionContext.Current.CacheSet(__result.UniqueKey, __result);
+                if (_OnAfterCreateAsync != null) await _OnAfterCreateAsync(__result).ConfigureAwait(false);
                 return __result;
             });
         }
@@ -48,6 +54,7 @@ namespace Demo.Service.Business.DataSvc
 
                 var __result = await _data.GetAsync(id).ConfigureAwait(false);
                 ExecutionContext.Current.CacheSet(__key, __result!);
+                if (_OnAfterGetAsync != null) await _OnAfterGetAsync(__result, id).ConfigureAwait(false);
                 return __result;
             });
         }
@@ -59,6 +66,7 @@ namespace Demo.Service.Business.DataSvc
                 var __result = await _data.UpdateAsync(Check.NotNull(value, nameof(value))).ConfigureAwait(false);
                 await Beef.Events.Event.PublishValueEventAsync(__result, "Person", "Updated").ConfigureAwait(false);
                 ExecutionContext.Current.CacheSet(__result.UniqueKey, __result);
+                if (_OnAfterUpdateAsync != null) await _OnAfterUpdateAsync(__result).ConfigureAwait(false);
                 return __result;
             });
         }
@@ -70,6 +78,8 @@ namespace Demo.Service.Business.DataSvc
                 await _data.DeleteAsync(id).ConfigureAwait(false);
                 await Beef.Events.Event.PublishEventAsync("Person", "Deleted", id).ConfigureAwait(false);
                 var __key = new UniqueKey(id);
+                ExecutionContext.Current.CacheRemove<Person>(__key);
+                if (_OnAfterDeleteAsync != null) await _OnAfterDeleteAsync(id).ConfigureAwait(false);
             });
         }
         
@@ -78,6 +88,7 @@ namespace Demo.Service.Business.DataSvc
             return DataSvcInvoker.Default.InvokeAsync(this, async () => 
             {
                 var __result = await _data.GetByArgsAsync(args, pagingArgs).ConfigureAwait(false);
+                if (_OnAfterGetByArgsAsync != null) await _OnAfterGetByArgsAsync(__result, args, pagingArgs).ConfigureAwait(false);
                 return __result;
             });
         }

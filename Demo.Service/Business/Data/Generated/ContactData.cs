@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Service.Business.Data
 {
-    public partial class ContactData : IContactData
+    public class ContactData : IContactData
     {
         public ContactData(IDataStorage dataStorage)
         {

@@ -10,9 +10,9 @@ using {{this}};
 
 namespace {{DataClass.Namespace}}
 {
-    public partial class {{DataClass.Name}} : {{DataInterface.Name}}
+    public {{#if DataClass.Partial}}partial {{/if}}class {{DataClass.Name}} : {{DataInterface.Name}}
     {
-        public {{DataClass.Name}}(IDataStorage dataStorage)
+        {{#if DataClass.PrivateConstructor}}private{{else}}public{{/if}} {{DataClass.Name}}(IDataStorage dataStorage)
         {
             _dataStorage = dataStorage;
         }

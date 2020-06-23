@@ -12,7 +12,7 @@ namespace {{DataServiceClass.Namespace}}
 {
     public {{#if DataServiceClass.Partial}}partial {{/if}}class {{DataServiceClass.Name}} : {{DataServiceInterface.Name}}
     {
-        {{#if DataServiceClass.Partial}}private{{else}}public{{/if}} {{DataServiceClass.Name}}({{DataInterface.Name}} data)
+        {{#if DataServiceClass.PrivateConstructor}}private{{else}}public{{/if}} {{DataServiceClass.Name}}({{DataInterface.Name}} data)
         {
             _data = data;
         }

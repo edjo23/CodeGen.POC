@@ -6,9 +6,13 @@ entities:
   collectionResult: true
   webApiRoutePrefix: api/v1/persons
   partialController: true
-  privateControllerConstructor: false
+  privateControllerConstructor: true
   partialManager: true
-  partialClass: true
+  privateManagerConstructor: true
+  partialDataSvc: true
+  privateDataSvcConstructor: true
+  partialData: true
+  privateDataConstructor: true
   validator: PersonValidator
   properties:
   - name: Id

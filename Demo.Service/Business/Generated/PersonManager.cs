@@ -18,7 +18,7 @@ namespace Demo.Service.Business
 {
     public partial class PersonManager : IPersonManager
     {
-        public PersonManager(IPersonDataSvc dataService)
+        private PersonManager(IPersonDataSvc dataService)
         {
             _dataService = dataService;
         }

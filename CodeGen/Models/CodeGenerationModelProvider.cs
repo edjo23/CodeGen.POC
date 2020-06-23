@@ -177,7 +177,9 @@ namespace CodeGen.Models
             var data = new DataClass
             {
                 Name = $"{entityClass.Name}Data",
-                Namespace = $"{genModel.BaseNamespace}.Business.Data"
+                Namespace = $"{genModel.BaseNamespace}.Business.Data",
+                Partial = entityConfig.PartialData,
+                PrivateConstructor = entityConfig.PrivateDataConstructor
             };
 
             data.Usings.Add("System");
@@ -227,7 +229,9 @@ namespace CodeGen.Models
             {
                 Name = $"{entityClass.Name}DataSvc",
                 Namespace = $"{genModel.BaseNamespace}.Business.DataSvc",
-                HasCaching = entityConfig.DataSvcCaching
+                HasCaching = entityConfig.DataSvcCaching,
+                Partial = entityConfig.PartialDataSvc,
+                PrivateConstructor = entityConfig.PrivateDataSvcConstructor
             };
 
             data.Usings.Add("Beef");

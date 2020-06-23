@@ -18,7 +18,7 @@ namespace Demo.Service.Api.Controllers
     [Route("api/v1/persons")]
     public partial class PersonController : ControllerBase
     {
-        public PersonController (IPersonManager manager)
+        private PersonController (IPersonManager manager)
         {
             Manager = manager;
         }

@@ -7,11 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGen", "CodeGen\CodeGen.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{86F95029-5CE2-4968-9654-2B1FA834FCAD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestService", "TestService\TestService.csproj", "{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CodeGen", "Demo.CodeGen\Demo.CodeGen.csproj", "{4876C3AB-BED1-44E1-96AC-1A0C2AC901AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.CodeGen", "Demo.CodeGen\Demo.CodeGen.csproj", "{4876C3AB-BED1-44E1-96AC-1A0C2AC901AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Service", "Demo.Service\Demo.Service.csproj", "{FBC8AADD-A052-45A2-8995-F920E32A7287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Service", "Demo.Service\Demo.Service.csproj", "{FBC8AADD-A052-45A2-8995-F920E32A7287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,18 +33,6 @@ Global
 		{4AE99A12-9554-460C-ACE3-B2E0CE2047A0}.Release|x64.Build.0 = Release|Any CPU
 		{4AE99A12-9554-460C-ACE3-B2E0CE2047A0}.Release|x86.ActiveCfg = Release|Any CPU
 		{4AE99A12-9554-460C-ACE3-B2E0CE2047A0}.Release|x86.Build.0 = Release|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Debug|x64.Build.0 = Debug|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Debug|x86.Build.0 = Debug|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Release|x64.ActiveCfg = Release|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Release|x64.Build.0 = Release|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Release|x86.ActiveCfg = Release|Any CPU
-		{AB7D4E70-D273-4647-8971-C5CD9C0BAF0C}.Release|x86.Build.0 = Release|Any CPU
 		{4876C3AB-BED1-44E1-96AC-1A0C2AC901AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4876C3AB-BED1-44E1-96AC-1A0C2AC901AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4876C3AB-BED1-44E1-96AC-1A0C2AC901AA}.Debug|x64.ActiveCfg = Debug|Any CPU
