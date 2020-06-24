@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGen", "CodeGen\CodeGen.csproj", "{4AE99A12-9554-460C-ACE3-B2E0CE2047A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{86F95029-5CE2-4968-9654-2B1FA834FCAD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CodeGen", "Demo.CodeGen\Demo.CodeGen.csproj", "{4876C3AB-BED1-44E1-96AC-1A0C2AC901AA}"
 EndProject

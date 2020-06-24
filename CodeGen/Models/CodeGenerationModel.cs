@@ -47,7 +47,7 @@ namespace CodeGen.Models
         public string Type { get; set; }
         public string EntityProperty { get; set; }
         public bool Mandatory { get; set; }
-        public string Validator { get; set; } // TODO Hack for now, needs to be Manager Operation only.
+        public string Validator { get; set; } // TODO Probably should only be a Manager Operation version of class.
     }
 
     public class EntityClass : ClassData
