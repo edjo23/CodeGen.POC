@@ -1,4 +1,5 @@
 ﻿using CodeGen.Artifacts;
+using CodeGen.Data;
 using CodeGen.Generators;
 using CodeGen.Models;
 using CodeGen.Renderers;
@@ -114,8 +115,9 @@ namespace CodeGen
                 return cb.Build();
             });
 
-            serviceCollection.AddOption((sp, c) => c.BindConfig("CodeGenerationModel", new CodeGenerationModelOptions()));
+            serviceCollection.AddOption((sp, c) => c.BindConfig("CodeGenerationData", new CodeGenerationDataOptions()));
 
+            serviceCollection.AddSingleton<ICodeGenerationDataProvider, CodeGenerationDataProvider>();
             serviceCollection.AddSingleton<ICodeGenerationModelProvider, CodeGenerationModelProvider>();
             serviceCollection.AddTransient<ITemplateProvider, HandlebarsTemplateProvider>();
             serviceCollection.AddTransient<IRenderer, HandlebarsRenderer>();

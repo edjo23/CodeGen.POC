@@ -22,28 +22,16 @@ namespace CodeGen.Models
 
     public class CodeGenerationModelProvider : ICodeGenerationModelProvider
     {
-        public CodeGenerationModelProvider(CodeGenerationModelOptions options)
+        public CodeGenerationModelProvider(ICodeGenerationDataProvider dataProvider)
         {
-            _options = options;
+            _data = new Lazy<CodeGenerationModel>(() => Transform(dataProvider.GetData()), true);
         }
 
-        private readonly CodeGenerationModelOptions _options;
-        private CodeGenerationModel? _data;
+        private Lazy<CodeGenerationModel> _data;
 
         public CodeGenerationModel GetData()
         {
-            // TODO use mem cache
-            if (_data == null)
-            {
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                    .IgnoreUnmatchedProperties()
-                    .Build();
-                var config = deserializer.Deserialize<Data.CodeGenerationData>(File.ReadAllText(_options.DataFilePath ?? "Data.yaml"));
-
-                _data = Transform(config);
-            }
-            return _data;
+            return _data.Value;
         }
 
         private CodeGenerationModel Transform(CodeGenerationData genConfig)
@@ -286,7 +274,7 @@ namespace CodeGen.Models
                 Namespace = $"{genModel.BaseNamespace}.Business",
                 Partial = entityConfig.PartialManager,
                 PrivateConstructor = entityConfig.PrivateManagerConstructor
-        };
+            };
 
             data.Usings.Add("Beef");
             data.Usings.Add("Beef.Business");
@@ -396,7 +384,6 @@ namespace CodeGen.Models
             }
             return op;
         }
-
     }
 }
 

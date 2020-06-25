@@ -27,7 +27,7 @@ namespace Demo.Service.Business.DataSvc
         private Func<Person, Task>? _OnAfterCreateAsync;
         private Func<Person?, Guid, Task>? _OnAfterGetAsync;
         private Func<Person, Task>? _OnAfterUpdateAsync;
-        private Func<Guid, Task> _OnAfterDeleteAsync;
+        private Func<Guid, Task>? _OnAfterDeleteAsync;
         private Func<PersonCollectionResult, PersonArgs, PagingArgs?, Task>? _OnAfterGetByArgsAsync;
 
         #endregion

@@ -35,7 +35,7 @@ namespace {{DataServiceClass.Namespace}}
         private Func<{{ReturnType}}, Task>? _OnAfter{{Name}}Async;
         {{/if}}
         {{#if IsDelete}}
-        private Func<{{#each Parameters}}{{Type}}{{#unless @last}}, {{/unless}}{{/each}}, Task> _OnAfter{{Name}}Async;
+        private Func<{{#each Parameters}}{{Type}}{{#unless @last}}, {{/unless}}{{/each}}, Task>? _OnAfter{{Name}}Async;
         {{/if}}
         {{/each}}
         {{/if}}
