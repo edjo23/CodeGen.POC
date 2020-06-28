@@ -14,7 +14,7 @@ namespace {{Namespace}}
     {{#if NewtonsoftJsonSerialization}}[JsonObject(MemberSerialization = MemberSerialization.OptIn)]{{/if}}
     public{{#if Abstract}} abstract{{/if}}{{#if Partial}} partial{{/if}} class {{Name}}{{#each Implements}}{{#if @first}} : {{/if}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
     {
-        {{#if HasBaseClass}}
+        {{#if HasBeefBaseClass}}
         #region Privates
 
         {{#Properties}}
@@ -31,8 +31,8 @@ namespace {{Namespace}}
         [JsonProperty("{{camel Name}}", DefaultValueHandling = DefaultValueHandling.{{#if EmitDefaultValue}}Include{{else}}Ignore{{/if}})]
         {{/if}}
         [Display(Name="{{DisplayName}}")]
-        public {{Type}}{{#if Nullable}}?{{/if}} {{Name}}{{#unless ../HasBaseClass}} { get; set; }{{/unless}}
-        {{#if ../HasBaseClass}}
+        public {{Type}}{{#if Nullable}}?{{/if}} {{Name}}{{#unless ../HasBeefBaseClass}} { get; set; }{{/unless}}
+        {{#if ../HasBeefBaseClass}}
         {
             get => _{{camel Name}};
             {{#if IsString}}
@@ -52,7 +52,7 @@ namespace {{Namespace}}
         {{/each}}
 
         #endregion
-        {{#if HasBaseClass}}
+        {{#if HasBeefBaseClass}}
         {{#if EntityProperties.Count}}
 
         #region IChangeTracking
@@ -124,7 +124,7 @@ namespace {{Namespace}}
 
         public void CopyFrom({{Name}} from)
         {
-            CopyFrom(({{Inherits}})from);
+            CopyFrom(({{Implements.[0]}})from);
             {{#each Properties}}
             {{Name}} = from.{{Name}};
             {{/each}}
@@ -170,8 +170,8 @@ namespace {{Namespace}}
     }
     {{#if CollectionName}}
 
-    public class {{CollectionName}} : {{#each CollectionImplements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}{{#unless HasBaseClass}} { }{{/unless}}
-    {{#if HasBaseClass}}
+    public class {{CollectionName}} : {{#each CollectionImplements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}{{#unless CollectionHasBeefBaseClass}} { }{{/unless}}
+    {{#if CollectionHasBeefBaseClass}}
     {
         #region Constructors
 
@@ -180,7 +180,6 @@ namespace {{Namespace}}
         public {{CollectionName}}(IEnumerable<{{Name}}> entities) => AddRange(entities);
         
         #endregion
-        {{#if HasBaseClass}}
 
         #region ICloneable
         
@@ -196,7 +195,6 @@ namespace {{Namespace}}
         }
         
         #endregion
-        {{/if}}
         {{#if CollectionResultName}}
 
         #region Operator

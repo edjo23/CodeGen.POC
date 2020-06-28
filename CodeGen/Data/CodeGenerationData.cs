@@ -20,9 +20,10 @@ namespace CodeGen.Data
         public IList<Operations> Operations { get; set; }
         public bool Abstract { get; set; }
         public string Usings { get; set; }
+        public string Inherits { get; set; }
         public string Implements { get; set; }
-
         public bool Collection { get; set; }
+        public string CollectionInherits { get; set; }
         public bool CollectionResult { get; set; }
         public string EntityScope { get; set; } = "Common";
         public bool ExcludeEntity { get; set; }

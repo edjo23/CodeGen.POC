@@ -114,31 +114,7 @@ namespace Demo.Service.Common.Entities
         #endregion
     }
 
-    public class AbstractEntityCollection : EntityBaseCollection<AbstractEntity>
-    {
-        #region Constructors
-
-        public AbstractEntityCollection() { }
-
-        public AbstractEntityCollection(IEnumerable<AbstractEntity> entities) => AddRange(entities);
-        
-        #endregion
-
-        #region ICloneable
-        
-        public override object Clone()
-        {
-            var clone = new AbstractEntityCollection();
-            foreach (AbstractEntity item in this)
-            {
-                clone.Add((AbstractEntity)item.Clone());
-            }
-                
-            return clone;
-        }
-        
-        #endregion
-    }
+    public class AbstractEntityCollection : List<AbstractEntity> { }
 }
 
 #nullable restore

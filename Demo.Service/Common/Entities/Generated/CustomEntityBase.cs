@@ -32,7 +32,7 @@ namespace Demo.Service.Common.Entities
         #endregion
     }
 
-    public class CustomEntityBaseCollection : List<CustomEntityBase> { }
+    public class CustomEntityBaseCollection : Queue<AwesomeEntity> { }
 }
 
 #nullable restore

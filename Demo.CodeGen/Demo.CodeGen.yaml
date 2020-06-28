@@ -78,6 +78,7 @@ entities:
   abstract: true
   partialEntity: true
   collection: true
+  collectionInherits: List<AbstractEntity>
   dataSvcCaching: false
   eventPublish: false
   properties:
@@ -103,8 +104,9 @@ entities:
   - type: Get
 
 - name: CustomEntityBase
-  implements: AwesomeEntity
+  inherits: AwesomeEntity
   collection: true
+  collectionInherits: Queue<AwesomeEntity>
   collectionResult: true
   omitEntityBase: true
   autoInferImplements: false

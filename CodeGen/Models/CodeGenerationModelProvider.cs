@@ -82,32 +82,27 @@ namespace CodeGen.Models
                 Namespace = $"{genModel.BaseNamespace}.{entityConfig.EntityScope}.Entities",
                 Abstract = entityConfig.Abstract,
                 Partial = entityConfig.PartialEntity,
-                Validator = entityConfig.Validator
+                Validator = entityConfig.Validator,
+                HasBeefBaseClass = !entityConfig.OmitEntityBase
             };
 
             // Usings
             data.Usings.Add($"System");
             data.Usings.Add($"System.ComponentModel.DataAnnotations");
+            if (entityConfig.OmitEntityBase == false)
+                data.Usings.Add($"Beef.Entities");
             if (entityConfig.EntityScope == "Business")
                 data.Usings.Add($"{genModel.BaseNamespace}.Common.Entities");
-            if (!String.IsNullOrWhiteSpace(entityConfig.Usings))
-            {
-                foreach (var item in entityConfig.Usings.Split(","))
-                    data.Usings.Add(item);
-            }
+            foreach (var item in String.IsNullOrWhiteSpace(entityConfig.Usings) ? new string[0] : entityConfig.Usings.Split(","))
+                data.Usings.Add(item);
 
             // Implements
-            if (entityConfig.OmitEntityBase == false)
-            {
-                data.Usings.Add($"Beef.Entities");
-                data.Inherits = "EntityBase";
-                data.Implements.Add(data.Inherits);
-            }
-            if (!String.IsNullOrWhiteSpace(entityConfig.Implements))
-            {
-                foreach (var item in entityConfig.Implements.Split(","))
-                    data.Implements.Add(item);
-            }
+            if (!string.IsNullOrWhiteSpace(entityConfig.Inherits))
+                data.Implements.Add(entityConfig.Inherits);
+            else if (entityConfig.OmitEntityBase == false)
+                data.Implements.Add("EntityBase");
+            foreach (var item in String.IsNullOrWhiteSpace(entityConfig.Implements) ? new string[0] : entityConfig.Implements.Split(","))
+                data.Implements.Add(item);
 
             data.Properties = entityConfig.Properties?.Select(o => TransformToProperty(o)).ToList() ?? new List<Property>();
 
@@ -146,8 +141,9 @@ namespace CodeGen.Models
             // Has collection?
             if (entityConfig.Collection)
             {
-                data.CollectionName = $"{data.Name}Collection";                
-                data.CollectionImplements.Add(entityConfig.OmitEntityBase ? $"List<{data.Name}>" : $"EntityBaseCollection<{data.Name}>");
+                data.CollectionName = $"{data.Name}Collection";
+                data.CollectionHasBeefBaseClass = entityConfig.OmitEntityBase == false && string.IsNullOrWhiteSpace(entityConfig.CollectionInherits);
+                data.CollectionImplements.Add(!string.IsNullOrWhiteSpace(entityConfig.CollectionInherits) ? entityConfig.CollectionInherits : entityConfig.OmitEntityBase ? $"List<{data.Name}>" : $"EntityBaseCollection<{data.Name}>");
                 data.Usings.Add("System.Collections.Generic");
 
                 // Has collection result?

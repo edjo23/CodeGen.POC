@@ -53,7 +53,6 @@ namespace CodeGen.Models
     public class EntityClass : ClassData
     {
         public bool Abstract { get; set; }
-        public string Inherits { get; set; }
         public ISet<string> Implements { get; set; } = new HashSet<string>();
         public IList<Property> Properties { get; set; }
         public bool NewtonsoftJsonSerialization { get; set; }
@@ -61,8 +60,9 @@ namespace CodeGen.Models
         public IList<string> CollectionImplements { get; set; } = new List<string>();
         public string CollectionResultName { get; set; }
         public string Validator { get; set; }
+        public bool HasBeefBaseClass { get; set; }
+        public bool CollectionHasBeefBaseClass { get; set; }
 
-        public bool HasBaseClass => Implements.Any(o => o == "EntityBase");
         public IList<Property> UniqueKeys => Properties.Where(o => o.UnqiueKey).ToList();
         public IList<Property> EntityProperties => Properties.Where(o => o.IsEntity).ToList();
         public IList<Property> CleanProperties => Properties.Where(o => !o.Immutable).ToList();
