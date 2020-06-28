@@ -30,9 +30,16 @@ namespace CodeGen.Artifacts
 
             foreach (var entity in data.Entities)
             {
-                var output = Renderer.Render(entity, Template.GetTemplate(Options.TemplatePath));
-                var directoryInfo = new DirectoryInfo(Options.TargetPath);
-                OutputService.Write(Path.Join(directoryInfo.FullName, $"{entity.EntityClass.Name}.cs"), output);
+                if (entity.EntityClass != null)
+                {
+                    var output = Renderer.Render(entity, Template.GetTemplate(Options.TemplatePath));
+                    var directoryInfo = new DirectoryInfo(Options.TargetPath);
+                    OutputService.Write(Path.Join(directoryInfo.FullName, $"{entity.EntityClass.Name}.cs"), output);
+                }
+                else
+                {
+                    // TODO: Remove.
+                }
             }
         }
     }

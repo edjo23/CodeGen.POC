@@ -47,9 +47,13 @@ namespace CodeGen.Models
         {
             var model = new Entity
             {
-                Name = entityConfig.Name,
-                EntityClass = TransformToEntityClass(entityConfig, genModel)
+                Name = entityConfig.Name
             };
+
+            if (entityConfig.ExcludeEntity == false)
+            {
+                model.EntityClass = TransformToEntityClass(entityConfig, genModel);
+            }
 
             if (entityConfig.Operations != null && entityConfig.Operations.Count > 0)
             {

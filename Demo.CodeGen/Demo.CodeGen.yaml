@@ -85,3 +85,9 @@ entities:
     type: string
   - name: LastName
     type: string
+
+- name: ExcludeEntity
+  excludeEntity: true
+  properties:
+  - name: Id
+    type: Guid
