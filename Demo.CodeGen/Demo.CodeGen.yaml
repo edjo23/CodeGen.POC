@@ -103,6 +103,7 @@ entities:
   - type: Get
 
 - name: CustomEntityBase
+  implements: AwesomeEntity
   collection: true
   collectionResult: true
   omitEntityBase: true

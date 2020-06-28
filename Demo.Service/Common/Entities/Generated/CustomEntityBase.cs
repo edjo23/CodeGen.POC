@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Demo.Service.Common.Entities
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class CustomEntityBase
+    public class CustomEntityBase : AwesomeEntity
     {
         #region Properties
 
