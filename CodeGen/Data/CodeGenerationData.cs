@@ -24,14 +24,21 @@ namespace CodeGen.Data
         public string EntityScope { get; set; } = "Common";
         public bool ExcludeEntity { get; set; }
         public bool PartialEntity { get; set; }
+        public bool ExcludeIData { get; set; }
+        public bool ExcludeData { get; set; }
         public bool PartialData { get; set; }
         public bool PrivateDataConstructor { get; set; }
+        public bool ExcludeIDataSvc { get; set; }
+        public bool ExcludeDataSvc { get; set; }
         public bool PartialDataSvc { get; set; }
         public bool PrivateDataSvcConstructor { get; set; }
+        public bool ExcludeIManager { get; set; }
+        public bool ExcludeManager { get; set; }
         public bool PartialManager { get; set; }
         public bool PrivateManagerConstructor { get; set; }
-        public bool PartialController { get; set; }
-        public bool PrivateControllerConstructor { get; set; }
+        public bool ExcludeWebApi { get; set; }
+        public bool PartialWebApi { get; set; }
+        public bool PrivateWebApiConstructor { get; set; }
 
         public bool DataSvcCaching { get; set; } = true;
         public bool? EventPublish { get; set; } = true;

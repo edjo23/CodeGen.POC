@@ -5,8 +5,8 @@ entities:
   collection: true
   collectionResult: true
   webApiRoutePrefix: api/v1/persons
-  partialController: true
-  privateControllerConstructor: true
+  partialWebApi: true
+  privateWebApiConstructor: true
   partialManager: true
   privateManagerConstructor: true
   partialDataSvc: true
@@ -88,6 +88,13 @@ entities:
 
 - name: ExcludeEntity
   excludeEntity: true
+  excludeIData: true
+  excludeData: true
+  excludeIDataSvc: true
+  excludeDataSvc: true
+  excludeIManager: true
+  excludeManager: true
+  excludeWebApi: true
   properties:
   - name: Id
     type: Guid

@@ -51,19 +51,24 @@ namespace CodeGen.Models
             };
 
             if (entityConfig.ExcludeEntity == false)
-            {
                 model.EntityClass = TransformToEntityClass(entityConfig, genModel);
-            }
 
             if (entityConfig.Operations != null && entityConfig.Operations.Count > 0)
             {
-                model.DataInterface = TransformToDataInterface(entityConfig, genModel, model.EntityClass);
-                model.DataClass = TransformToDataClass(entityConfig, genModel, model.EntityClass);
-                model.DataServiceInterface = TransformToDataServiceInterface(entityConfig, genModel, model.EntityClass);
-                model.DataServiceClass = TransformToDataServiceClass(entityConfig, genModel, model.EntityClass, model.DataInterface);
-                model.ManagerInterface = TransformToManagerInterface(entityConfig, genModel, model.EntityClass);
-                model.Manager = TransformToManagerClass(entityConfig, genModel, model.EntityClass, model.DataServiceInterface);
-                model.ControllerClass = TransformToControllerClass(entityConfig, genModel, model.EntityClass, model.ManagerInterface);
+                if (entityConfig.ExcludeIData == false)
+                    model.DataInterface = TransformToDataInterface(entityConfig, genModel, model.EntityClass);
+                if (entityConfig.ExcludeData == false)
+                    model.DataClass = TransformToDataClass(entityConfig, genModel, model.EntityClass);
+                if (entityConfig.ExcludeIDataSvc == false)
+                    model.DataServiceInterface = TransformToDataServiceInterface(entityConfig, genModel, model.EntityClass);
+                if (entityConfig.ExcludeDataSvc == false)
+                    model.DataServiceClass = TransformToDataServiceClass(entityConfig, genModel, model.EntityClass, model.DataInterface);
+                if (entityConfig.ExcludeIManager == false)
+                    model.ManagerInterface = TransformToManagerInterface(entityConfig, genModel, model.EntityClass);
+                if (entityConfig.ExcludeManager == false)
+                    model.Manager = TransformToManagerClass(entityConfig, genModel, model.EntityClass, model.DataServiceInterface);
+                if (entityConfig.ExcludeWebApi == false)
+                    model.ControllerClass = TransformToControllerClass(entityConfig, genModel, model.EntityClass, model.ManagerInterface);
             }
 
             return model;
@@ -319,8 +324,8 @@ namespace CodeGen.Models
             var data = new ControllerClass();
             data.Name = $"{entityClass.Name}Controller";
             data.Namespace = $"{genModel.BaseNamespace}.Api.Controllers";
-            data.Partial = entityConfig.PartialController;
-            data.PrivateConstructor = entityConfig.PrivateControllerConstructor;
+            data.Partial = entityConfig.PartialWebApi;
+            data.PrivateConstructor = entityConfig.PrivateWebApiConstructor;
 
             data.WebApiRoutePrefix = entityConfig.WebApiRoutePrefix;
 
