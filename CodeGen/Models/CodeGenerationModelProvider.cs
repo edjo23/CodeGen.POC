@@ -53,7 +53,7 @@ namespace CodeGen.Models
             if (entityConfig.ExcludeEntity == false)
                 model.EntityClass = TransformToEntityClass(entityConfig, genModel);
 
-            if (entityConfig.Operations != null && entityConfig.Operations.Count > 0)
+            if (entityConfig.Operations != null && entityConfig.Operations.Count > 0 && entityConfig.ExcludeAll == false)
             {
                 if (entityConfig.ExcludeIData == false)
                     model.DataInterface = TransformToDataInterface(entityConfig, genModel, model.EntityClass);

@@ -88,13 +88,14 @@ entities:
 
 - name: ExcludeEntity
   excludeEntity: true
-  excludeIData: true
-  excludeData: true
-  excludeIDataSvc: true
-  excludeDataSvc: true
-  excludeIManager: true
-  excludeManager: true
-  excludeWebApi: true
+  excludeAll: true
+  # excludeIData: true
+  # excludeData: true
+  # excludeIDataSvc: true
+  # excludeDataSvc: true
+  # excludeIManager: true
+  # excludeManager: true
+  # excludeWebApi: true
   properties:
   - name: Id
     type: Guid

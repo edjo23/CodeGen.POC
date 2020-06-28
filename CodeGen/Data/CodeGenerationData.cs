@@ -39,7 +39,7 @@ namespace CodeGen.Data
         public bool ExcludeWebApi { get; set; }
         public bool PartialWebApi { get; set; }
         public bool PrivateWebApiConstructor { get; set; }
-
+        public bool ExcludeAll { get; set; }
         public bool DataSvcCaching { get; set; } = true;
         public bool? EventPublish { get; set; } = true;
         public string Validator { get; set; }
