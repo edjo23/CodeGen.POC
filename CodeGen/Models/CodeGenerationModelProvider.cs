@@ -85,32 +85,55 @@ namespace CodeGen.Models
                 Validator = entityConfig.Validator
             };
 
+            // Usings
             data.Usings.Add($"System");
             data.Usings.Add($"System.ComponentModel.DataAnnotations");
+            if (entityConfig.EntityScope == "Business")
+                data.Usings.Add($"{genModel.BaseNamespace}.Common.Entities");
+            if (!String.IsNullOrWhiteSpace(entityConfig.Usings))
+            {
+                foreach (var item in entityConfig.Usings.Split(","))
+                    data.Usings.Add(item);
+            }
 
+            // Implements
             if (entityConfig.OmitEntityBase == false)
             {
                 data.Usings.Add($"Beef.Entities");
                 data.Inherits = "EntityBase";
                 data.Implements.Add(data.Inherits);
             }
-
-            if (entityConfig.EntityScope == "Business")
-                data.Usings.Add($"{genModel.BaseNamespace}.Common.Entities");
+            if (!String.IsNullOrWhiteSpace(entityConfig.Implements))
+            {
+                foreach (var item in entityConfig.Implements.Split(","))
+                    data.Implements.Add(item);
+            }
 
             data.Properties = entityConfig.Properties?.Select(o => TransformToProperty(o)).ToList() ?? new List<Property>();
 
-            // Add IIdentifier
-            if (data.Properties.Any(o => o.Name == "Id" && o.Type == "Guid" && o.Nullable == false))
-                data.Implements.Add("IGuidIdentifier");
+            if (entityConfig.AutoInferImplements)
+            {
+                // Add IIdentifier
+                if (data.Properties.Any(o => o.Name == "Id" && o.Type == "Guid" && o.Nullable == false))
+                {
+                    data.Usings.Add($"Beef.Entities");
+                    data.Implements.Add("IGuidIdentifier");
+                }
 
-            // Add IETag
-            if (data.Properties.Any(o => o.Name == "ETag" && o.Type == "string"))
-                data.Implements.Add("IETag");
+                // Add IETag
+                if (data.Properties.Any(o => o.Name == "ETag" && o.Type == "string"))
+                {
+                    data.Usings.Add($"Beef.Entities");
+                    data.Implements.Add("IETag");
+                }
 
-            // Add ChangeLog
-            if (data.Properties.Any(o => o.Name == "ChangeLog" && o.Type == "ChangeLog"))
-                data.Implements.Add("IChangeLog");
+                // Add ChangeLog
+                if (data.Properties.Any(o => o.Name == "ChangeLog" && o.Type == "ChangeLog"))
+                {
+                    data.Usings.Add($"Beef.Entities");
+                    data.Implements.Add("IChangeLog");
+                }
+            }
 
             // Add IEquatable
             if (entityConfig.OmitEntityBase == false)

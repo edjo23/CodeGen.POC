@@ -19,6 +19,9 @@ namespace CodeGen.Data
         public IList<Property> Properties { get; set; }
         public IList<Operations> Operations { get; set; }
         public bool Abstract { get; set; }
+        public string Usings { get; set; }
+        public string Implements { get; set; }
+
         public bool Collection { get; set; }
         public bool CollectionResult { get; set; }
         public string EntityScope { get; set; } = "Common";
@@ -44,6 +47,7 @@ namespace CodeGen.Data
         public bool? EventPublish { get; set; } = true;
         public string Validator { get; set; }
         public bool OmitEntityBase { get; set; }
+        public bool AutoInferImplements { get; set; } = true;
     }
 
     public class Property

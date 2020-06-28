@@ -106,6 +106,15 @@ entities:
   collection: true
   collectionResult: true
   omitEntityBase: true
+  autoInferImplements: false
+  usings: Beef.Entities
   properties:
   - name: Id
     type: Guid
+    uniqueKey: true
+  - name: ETag
+    type: string
+    ArgumentName: etag
+  - name: ChangeLog
+    type: ChangeLog
+    isEntity: true

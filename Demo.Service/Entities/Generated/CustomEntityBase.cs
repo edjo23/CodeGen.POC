@@ -4,6 +4,7 @@
 
 #nullable enable
 
+using Beef.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,15 @@ namespace Demo.Service.Common.Entities
 
         [JsonProperty("id", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [Display(Name="Identifier")]
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
+        
+        [JsonProperty("eTag", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [Display(Name="ETag")]
+        public string? ETag { get; set; }
+        
+        [JsonProperty("changeLog", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [Display(Name="Change Log")]
+        public ChangeLog? ChangeLog { get; set; }
 
         #endregion
     }
