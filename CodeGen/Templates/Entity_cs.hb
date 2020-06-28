@@ -12,7 +12,7 @@ using {{this}};
 namespace {{Namespace}}
 {
     {{#if NewtonsoftJsonSerialization}}[JsonObject(MemberSerialization = MemberSerialization.OptIn)]{{/if}}
-    public class {{Name}} : {{join Implements}}
+    public{{#if Abstract}} abstract{{/if}}{{#if Partial}} partial{{/if}} class {{Name}} : {{#each Implements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
     {
         #region Privates
 
@@ -124,9 +124,10 @@ namespace {{Namespace}}
         }
 
         #endregion
-        {{#if ImplementsEntityBase}}
+        {{#if ImplementsICloneable}}
+        {{#unless Abstract}}
 
-        #region IConeable
+        #region ICloneable
 
         public override object Clone()
         {
@@ -136,6 +137,7 @@ namespace {{Namespace}}
         }        
 
         #endregion
+        {{/unless}}
         {{/if}}
         
         #region ICleanUp
@@ -162,7 +164,7 @@ namespace {{Namespace}}
     }
     {{#if CollectionName}}
 
-    public class {{CollectionName}} : EntityBaseCollection<{{Name}}>
+    public class {{CollectionName}} : {{#each CollectionImplements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
     {
         #region Constructors
 
@@ -171,6 +173,7 @@ namespace {{Namespace}}
         public {{CollectionName}}(IEnumerable<{{Name}}> entities) => AddRange(entities);
         
         #endregion
+        {{#if CollectionImplementsICloneable}}
 
         #region ICloneable
         
@@ -186,6 +189,7 @@ namespace {{Namespace}}
         }
         
         #endregion
+        {{/if}}
         {{#if CollectionResultName}}
 
         #region Operator

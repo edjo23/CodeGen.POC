@@ -52,15 +52,18 @@ namespace CodeGen.Models
 
     public class EntityClass : ClassData
     {
+        public bool Abstract { get; set; }
         public string Inherits { get; set; }
         public IList<string> Implements { get; set; } = new List<string>();
         public IList<Property> Properties { get; set; }
         public bool NewtonsoftJsonSerialization { get; set; }
         public string CollectionName { get; set; }
+        public IList<string> CollectionImplements { get; set; } = new List<string>();
         public string CollectionResultName { get; set; }
         public string Validator { get; set; }
 
-        public bool ImplementsEntityBase => Implements.Any(o => o == "EntityBase");
+        public bool ImplementsICloneable => Implements.Any(o => o == "EntityBase");
+        public bool CollectionImplementsICloneable => CollectionImplements.Any(o => o == $"EntityBaseCollection<{Name}>");
         public IList<Property> UniqueKeys => Properties.Where(o => o.UnqiueKey).ToList();
         public IList<Property> EntityProperties => Properties.Where(o => o.IsEntity).ToList();
         public IList<Property> CleanProperties => Properties.Where(o => !o.Immutable).ToList();

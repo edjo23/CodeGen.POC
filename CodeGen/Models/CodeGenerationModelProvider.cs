@@ -67,18 +67,21 @@ namespace CodeGen.Models
 
         private EntityClass TransformToEntityClass(Data.Entity entityConfig, CodeGenerationModel genModel)
         {
-            var scope = "Common";
-
             var data = new EntityClass
             {
                 Name = entityConfig.Name,
-                Namespace = $"{genModel.BaseNamespace}.{scope}.Entities",
+                Namespace = $"{genModel.BaseNamespace}.{entityConfig.EntityScope}.Entities",
+                Abstract = entityConfig.Abstract,
+                Partial = entityConfig.PartialEntity,
                 Validator = entityConfig.Validator
             };
 
             data.Usings.Add($"System");
             data.Usings.Add($"System.ComponentModel.DataAnnotations");
             data.Usings.Add($"Beef.Entities");
+
+            if (entityConfig.EntityScope == "Business")
+                data.Usings.Add($"{genModel.BaseNamespace}.Common.Entities");
 
             data.Inherits = "EntityBase";
             data.Implements.Add(data.Inherits);
@@ -105,12 +108,15 @@ namespace CodeGen.Models
             data.Usings.Add("Newtonsoft.Json");
 
             // Has collection?
-            data.CollectionName = entityConfig.Collection ? $"{data.Name}Collection" : null;
-            if (data.CollectionName != null)
+            if (entityConfig.Collection)
+            {
+                data.CollectionName = $"{data.Name}Collection";
+                data.CollectionImplements.Add($"EntityBaseCollection<{data.Name}>");
                 data.Usings.Add("System.Collections.Generic");
 
-            // Has collection result?
-            data.CollectionResultName = entityConfig.CollectionResult ? $"{data.Name}CollectionResult" : null;
+                // Has collection result?
+                data.CollectionResultName = entityConfig.CollectionResult ? $"{data.Name}CollectionResult" : null;
+            }
 
             return data;
         }

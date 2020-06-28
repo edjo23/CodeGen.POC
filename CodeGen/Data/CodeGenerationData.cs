@@ -6,9 +6,7 @@ namespace CodeGen.Data
 {
     public class CodeGenerationData
     {
-        public string EntityScope { get; set; } = "Common";
         public string BaseNamespace { get; set; }
-
         public string RefDataNamespace { get; set; }
         public IList<Entity> Entities { get; set; }
         public bool? EventPublish { get; set; } = true;
@@ -20,8 +18,11 @@ namespace CodeGen.Data
         public string WebApiRoutePrefix { get; set; }
         public IList<Property> Properties { get; set; }
         public IList<Operations> Operations { get; set; }
+        public bool Abstract { get; set; }
         public bool Collection { get; set; }
         public bool CollectionResult { get; set; }
+        public string EntityScope { get; set; } = "Common";
+        public bool PartialEntity { get; set; }
         public bool PartialController { get; set; }
         public bool PrivateControllerConstructor { get; set; }
         public bool PartialManager { get; set; }

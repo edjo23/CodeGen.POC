@@ -92,7 +92,7 @@ namespace Demo.Service.Common.Entities
 
         #endregion
 
-        #region IConeable
+        #region ICloneable
 
         public override object Clone()
         {

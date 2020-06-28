@@ -13,11 +13,10 @@ using System.ComponentModel.DataAnnotations;
 namespace Demo.Service.Common.Entities
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class Contact : EntityBase, IGuidIdentifier, IEquatable<Contact>
+    public abstract partial class AbstractEntity : EntityBase, IEquatable<AbstractEntity>
     {
         #region Privates
 
-        private Guid _id;
         private string? _firstName;
         private string? _lastName;
 
@@ -25,14 +24,6 @@ namespace Demo.Service.Common.Entities
 
         #region Properties
 
-        [JsonProperty("id", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [Display(Name="Identifier")]
-        public Guid Id
-        {
-            get => _id;
-            set => SetValue(ref _id, value, false, false, nameof(Id));
-        }
-        
         [JsonProperty("firstName", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [Display(Name="First Name")]
         public string? FirstName
@@ -51,25 +42,17 @@ namespace Demo.Service.Common.Entities
 
         #endregion
 
-        #region UniqueKey
-
-        public override bool HasUniqueKey => true;
-
-        public override string[] UniqueKeyProperties => new string[] { nameof(Id) };
-
-        #endregion
-
         #region IsEquitable
         
         public override bool Equals(object? obj)
         {
-            if (obj == null || !(obj is Contact val))
+            if (obj == null || !(obj is AbstractEntity val))
                 return false;
 
             return Equals(val);
         }
 
-        public bool Equals(Contact? value)
+        public bool Equals(AbstractEntity? value)
         {
             if (((object)value!) == ((object)this))
                 return true;
@@ -77,7 +60,6 @@ namespace Demo.Service.Common.Entities
                 return false;
 
             return base.Equals((object)value)
-                && Equals(Id, value.Id)
                 && Equals(FirstName, value.FirstName)
                 && Equals(LastName, value.LastName);
         }
@@ -86,7 +68,6 @@ namespace Demo.Service.Common.Entities
         {
             var hash = new HashCode();
 
-            hash.Add(Id);
             hash.Add(FirstName);
             hash.Add(LastName);
 
@@ -99,28 +80,16 @@ namespace Demo.Service.Common.Entities
 
         public override void CopyFrom(object from)
         {
-            var fval = ValidateCopyFromType<Contact>(from);
+            var fval = ValidateCopyFromType<AbstractEntity>(from);
             CopyFrom(fval);
         }
 
-        public void CopyFrom(Contact from)
+        public void CopyFrom(AbstractEntity from)
         {
             CopyFrom((EntityBase)from);
-            Id = from.Id;
             FirstName = from.FirstName;
             LastName = from.LastName;
         }
-
-        #endregion
-
-        #region ICloneable
-
-        public override object Clone()
-        {
-            var clone = new Contact();
-            clone.CopyFrom(this);
-            return clone;
-        }        
 
         #endregion
         
@@ -129,7 +98,6 @@ namespace Demo.Service.Common.Entities
         public override void CleanUp()
         {
             base.CleanUp();
-            Id = Cleaner.Clean(Id);
             FirstName = Cleaner.Clean(FirstName, StringTrim.UseDefault, StringTransform.UseDefault);
             LastName = Cleaner.Clean(LastName, StringTrim.UseDefault, StringTransform.UseDefault);
         }
@@ -138,8 +106,7 @@ namespace Demo.Service.Common.Entities
         {
             get
             {
-              return Cleaner.IsInitial(Id)
-                  && Cleaner.IsInitial(FirstName)
+              return Cleaner.IsInitial(FirstName)
                   && Cleaner.IsInitial(LastName);
             }
         }
@@ -147,13 +114,13 @@ namespace Demo.Service.Common.Entities
         #endregion
     }
 
-    public class ContactCollection : EntityBaseCollection<Contact>
+    public class AbstractEntityCollection : EntityBaseCollection<AbstractEntity>
     {
         #region Constructors
 
-        public ContactCollection() { }
+        public AbstractEntityCollection() { }
 
-        public ContactCollection(IEnumerable<Contact> entities) => AddRange(entities);
+        public AbstractEntityCollection(IEnumerable<AbstractEntity> entities) => AddRange(entities);
         
         #endregion
 
@@ -161,10 +128,10 @@ namespace Demo.Service.Common.Entities
         
         public override object Clone()
         {
-            var clone = new ContactCollection();
-            foreach (Contact item in this)
+            var clone = new AbstractEntityCollection();
+            foreach (AbstractEntity item in this)
             {
-                clone.Add((Contact)item.Clone());
+                clone.Add((AbstractEntity)item.Clone());
             }
                 
             return clone;

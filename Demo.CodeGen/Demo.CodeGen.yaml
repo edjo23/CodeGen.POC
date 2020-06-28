@@ -74,3 +74,14 @@ entities:
   - type: Delete
   - type: GetColl
   
+- name: AbstractEntity
+  abstract: true
+  partialEntity: true
+  collection: true
+  dataSvcCaching: false
+  eventPublish: false
+  properties:
+  - name: FirstName
+    type: string
+  - name: LastName
+    type: string
