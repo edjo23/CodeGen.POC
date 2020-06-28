@@ -99,3 +99,13 @@ entities:
   properties:
   - name: Id
     type: Guid
+  operations:
+  - type: Get
+
+- name: CustomEntityBase
+  collection: true
+  collectionResult: true
+  omitEntityBase: true
+  properties:
+  - name: Id
+    type: Guid

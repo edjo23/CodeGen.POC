@@ -12,8 +12,9 @@ using {{this}};
 namespace {{Namespace}}
 {
     {{#if NewtonsoftJsonSerialization}}[JsonObject(MemberSerialization = MemberSerialization.OptIn)]{{/if}}
-    public{{#if Abstract}} abstract{{/if}}{{#if Partial}} partial{{/if}} class {{Name}} : {{#each Implements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+    public{{#if Abstract}} abstract{{/if}}{{#if Partial}} partial{{/if}} class {{Name}}{{#each Implements}}{{#if @first}} : {{/if}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
     {
+        {{#if HasBaseClass}}
         #region Privates
 
         {{#Properties}}
@@ -22,12 +23,16 @@ namespace {{Namespace}}
 
         #endregion
 
+        {{/if}}
         #region Properties
 
         {{#each Properties}}
-        {{#if ../NewtonsoftJsonSerialization}}[JsonProperty("{{camel Name}}", DefaultValueHandling = DefaultValueHandling.{{#if EmitDefaultValue}}Include{{else}}Ignore{{/if}})]{{/if}}
+        {{#if ../NewtonsoftJsonSerialization}}
+        [JsonProperty("{{camel Name}}", DefaultValueHandling = DefaultValueHandling.{{#if EmitDefaultValue}}Include{{else}}Ignore{{/if}})]
+        {{/if}}
         [Display(Name="{{DisplayName}}")]
-        public {{Type}}{{#if Nullable}}?{{/if}} {{Name}}
+        public {{Type}}{{#if Nullable}}?{{/if}} {{Name}}{{#unless ../HasBaseClass}} { get; set; }{{/unless}}
+        {{#if ../HasBaseClass}}
         {
             get => _{{camel Name}};
             {{#if IsString}}
@@ -37,15 +42,17 @@ namespace {{Namespace}}
             set => SetValue(ref _{{camel Name}}, value, {{#if Immutable}}true{{else}}false{{/if}}, DateTimeTransform.DateOnly, nameof({{Name}}));
             {{else}}
             set => SetValue(ref _{{camel Name}}, value, {{#if Immutable}}true{{else}}false{{/if}}, {{#if BubblePropertyChanged}}true{{else}}false{{/if}}, nameof({{Name}}));
-            {{/if}}
-            {{/if}}
+            {{/if}}        
+            {{/if}}        
         }
+        {{/if}}
         {{#unless @last}}
         
         {{/unless}}
         {{/each}}
 
         #endregion
+        {{#if HasBaseClass}}
         {{#if EntityProperties.Count}}
 
         #region IChangeTracking
@@ -124,7 +131,6 @@ namespace {{Namespace}}
         }
 
         #endregion
-        {{#if ImplementsICloneable}}
         {{#unless Abstract}}
 
         #region ICloneable
@@ -138,7 +144,6 @@ namespace {{Namespace}}
 
         #endregion
         {{/unless}}
-        {{/if}}
         
         #region ICleanUp
 
@@ -161,10 +166,12 @@ namespace {{Namespace}}
         }
 
         #endregion
+        {{/if}}
     }
     {{#if CollectionName}}
 
-    public class {{CollectionName}} : {{#each CollectionImplements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+    public class {{CollectionName}} : {{#each CollectionImplements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}{{#unless HasBaseClass}} { }{{/unless}}
+    {{#if HasBaseClass}}
     {
         #region Constructors
 
@@ -173,7 +180,7 @@ namespace {{Namespace}}
         public {{CollectionName}}(IEnumerable<{{Name}}> entities) => AddRange(entities);
         
         #endregion
-        {{#if CollectionImplementsICloneable}}
+        {{#if HasBaseClass}}
 
         #region ICloneable
         
@@ -199,7 +206,6 @@ namespace {{Namespace}}
         #endregion
         {{/if}}
     }
-    {{/if}}
     {{#if CollectionResultName}}
 
     public class {{CollectionResultName}} : EntityCollectionResult<{{CollectionName}}, {{Name}}>
@@ -217,6 +223,8 @@ namespace {{Namespace}}
             return clone;
         }
     }
+    {{/if}}
+    {{/if}}
     {{/if}}
 }
 

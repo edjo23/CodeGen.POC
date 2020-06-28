@@ -87,18 +87,21 @@ namespace CodeGen.Models
 
             data.Usings.Add($"System");
             data.Usings.Add($"System.ComponentModel.DataAnnotations");
-            data.Usings.Add($"Beef.Entities");
+
+            if (entityConfig.OmitEntityBase == false)
+            {
+                data.Usings.Add($"Beef.Entities");
+                data.Inherits = "EntityBase";
+                data.Implements.Add(data.Inherits);
+            }
 
             if (entityConfig.EntityScope == "Business")
                 data.Usings.Add($"{genModel.BaseNamespace}.Common.Entities");
 
-            data.Inherits = "EntityBase";
-            data.Implements.Add(data.Inherits);
-
             data.Properties = entityConfig.Properties?.Select(o => TransformToProperty(o)).ToList() ?? new List<Property>();
 
             // Add IIdentifier
-            if (data.Properties.Any(o => o.Name == "Id" && o.Type == "Guid"))
+            if (data.Properties.Any(o => o.Name == "Id" && o.Type == "Guid" && o.Nullable == false))
                 data.Implements.Add("IGuidIdentifier");
 
             // Add IETag
@@ -110,7 +113,8 @@ namespace CodeGen.Models
                 data.Implements.Add("IChangeLog");
 
             // Add IEquatable
-            data.Implements.Add($"IEquatable<{data.Name}>");
+            if (entityConfig.OmitEntityBase == false)
+                data.Implements.Add($"IEquatable<{data.Name}>");
 
             // Add Newtonsoft serialisation
             data.NewtonsoftJsonSerialization = true;
@@ -119,8 +123,8 @@ namespace CodeGen.Models
             // Has collection?
             if (entityConfig.Collection)
             {
-                data.CollectionName = $"{data.Name}Collection";
-                data.CollectionImplements.Add($"EntityBaseCollection<{data.Name}>");
+                data.CollectionName = $"{data.Name}Collection";                
+                data.CollectionImplements.Add(entityConfig.OmitEntityBase ? $"List<{data.Name}>" : $"EntityBaseCollection<{data.Name}>");
                 data.Usings.Add("System.Collections.Generic");
 
                 // Has collection result?

@@ -50,7 +50,7 @@ Entity
 Other models can be created and used as required.
 
 ## Work in progress
-This is a work in progress, there are many missing features.
+This is a work in progress, there are many missing features, especially around data layer and service agents. 
 
 ## Extensibility
 DI was used to configure the code generation. The intent was to try and make it easier to extend the code generation process to allow for other artifacts to be generated, e.g. markdown files, mermaid diagrams.
@@ -70,3 +70,7 @@ The option to enable/disable partial classes was added. Originally this was an i
 
 ### Nullable reference types
 There are some differences to nullable types.
+
+### More convention based autos
+- Auto set operation based on type
+- Auto set Beef entity interfaces

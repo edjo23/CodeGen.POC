@@ -43,6 +43,7 @@ namespace CodeGen.Data
         public bool DataSvcCaching { get; set; } = true;
         public bool? EventPublish { get; set; } = true;
         public string Validator { get; set; }
+        public bool OmitEntityBase { get; set; }
     }
 
     public class Property
