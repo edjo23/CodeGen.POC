@@ -35,6 +35,11 @@ namespace CodeGen
 
     public static class Extensions
     {
+        public static bool HasValue(this string? value)
+        {
+            return !string.IsNullOrWhiteSpace(value);
+        }
+
         /// <summary>
         /// The <see cref="Regex"/> expression pattern for split strings into words.
         /// </summary>

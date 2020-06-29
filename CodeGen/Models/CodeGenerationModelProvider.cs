@@ -142,12 +142,16 @@ namespace CodeGen.Models
             if (entityConfig.Collection)
             {
                 data.CollectionName = $"{data.Name}Collection";
-                data.CollectionHasBeefBaseClass = entityConfig.OmitEntityBase == false && string.IsNullOrWhiteSpace(entityConfig.CollectionInherits);
-                data.CollectionImplements.Add(!string.IsNullOrWhiteSpace(entityConfig.CollectionInherits) ? entityConfig.CollectionInherits : entityConfig.OmitEntityBase ? $"List<{data.Name}>" : entityConfig.CollectionKeyed ? $"EntityBaseKeyedCollection<UniqueKey, {data.Name}>" : $"EntityBaseCollection<{data.Name}>");
+                data.CollectionHasBeefBaseClass = entityConfig.OmitEntityBase == false && entityConfig.CollectionInherits.HasValue() == false;
+                data.CollectionImplements.Add(entityConfig.CollectionInherits.HasValue() ? entityConfig.CollectionInherits : entityConfig.OmitEntityBase ? $"List<{data.Name}>" : entityConfig.CollectionKeyed ? $"EntityBaseKeyedCollection<UniqueKey, {data.Name}>" : $"EntityBaseCollection<{data.Name}>");
                 data.Usings.Add("System.Collections.Generic");
 
                 // Has collection result?
-                data.CollectionResultName = entityConfig.CollectionResult ? $"{data.Name}CollectionResult" : null;
+                if (entityConfig.CollectionResult)
+                {
+                    data.CollectionResultName = $"{data.Name}CollectionResult";
+                    data.CollectionResultImplements.Add(entityConfig.CollectionResultInherits.HasValue() ? entityConfig.CollectionResultInherits : $"EntityCollectionResult<{data.CollectionName}, {data.Name}>");
+                }
             }
 
             return data;

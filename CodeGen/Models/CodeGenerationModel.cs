@@ -57,16 +57,17 @@ namespace CodeGen.Models
         public IList<Property> Properties { get; set; }
         public bool NewtonsoftJsonSerialization { get; set; }
         public string CollectionName { get; set; }
-        public IList<string> CollectionImplements { get; set; } = new List<string>();
+        public ISet<string> CollectionImplements { get; set; } = new HashSet<string>();
         public string CollectionResultName { get; set; }
+        public ISet<string> CollectionResultImplements { get; set; } = new HashSet<string>();
         public string Validator { get; set; }
         public bool HasBeefBaseClass { get; set; }
         public bool CollectionHasBeefBaseClass { get; set; }
-        public bool CollectionKeyed => CollectionImplements.Any(o => o.StartsWith("EntityBaseKeyedCollection"));
 
         public IList<Property> UniqueKeys => Properties.Where(o => o.UnqiueKey).ToList();
         public IList<Property> EntityProperties => Properties.Where(o => o.IsEntity).ToList();
         public IList<Property> CleanProperties => Properties.Where(o => !o.Immutable).ToList();
+        public bool CollectionKeyed => CollectionImplements.Any(o => o.StartsWith("EntityBaseKeyedCollection"));
     }
 
     public class DataInterface : ClassData

@@ -214,7 +214,7 @@ namespace {{Namespace}}
     }
     {{#if CollectionResultName}}
 
-    public class {{CollectionResultName}} : EntityCollectionResult<{{CollectionName}}, {{Name}}>
+    public class {{CollectionResultName}} : {{#each CollectionResultImplements}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
     {
         public {{CollectionResultName}}() { }
         
