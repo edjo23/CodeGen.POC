@@ -180,6 +180,14 @@ namespace {{Namespace}}
         public {{CollectionName}}(IEnumerable<{{Name}}> entities) => AddRange(entities);
         
         #endregion
+        {{#if CollectionKeyed}}
+
+        #region KeyedCollection
+        
+        protected override UniqueKey GetKeyForItem({{Name}} entity) => entity.UniqueKey;
+        
+        #endregion
+        {{/if}}
 
         #region ICloneable
         

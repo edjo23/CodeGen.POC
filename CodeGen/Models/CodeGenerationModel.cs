@@ -62,6 +62,7 @@ namespace CodeGen.Models
         public string Validator { get; set; }
         public bool HasBeefBaseClass { get; set; }
         public bool CollectionHasBeefBaseClass { get; set; }
+        public bool CollectionKeyed => CollectionImplements.Any(o => o.StartsWith("EntityBaseKeyedCollection"));
 
         public IList<Property> UniqueKeys => Properties.Where(o => o.UnqiueKey).ToList();
         public IList<Property> EntityProperties => Properties.Where(o => o.IsEntity).ToList();

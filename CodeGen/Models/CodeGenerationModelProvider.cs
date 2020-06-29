@@ -143,7 +143,7 @@ namespace CodeGen.Models
             {
                 data.CollectionName = $"{data.Name}Collection";
                 data.CollectionHasBeefBaseClass = entityConfig.OmitEntityBase == false && string.IsNullOrWhiteSpace(entityConfig.CollectionInherits);
-                data.CollectionImplements.Add(!string.IsNullOrWhiteSpace(entityConfig.CollectionInherits) ? entityConfig.CollectionInherits : entityConfig.OmitEntityBase ? $"List<{data.Name}>" : $"EntityBaseCollection<{data.Name}>");
+                data.CollectionImplements.Add(!string.IsNullOrWhiteSpace(entityConfig.CollectionInherits) ? entityConfig.CollectionInherits : entityConfig.OmitEntityBase ? $"List<{data.Name}>" : entityConfig.CollectionKeyed ? $"EntityBaseKeyedCollection<UniqueKey, {data.Name}>" : $"EntityBaseCollection<{data.Name}>");
                 data.Usings.Add("System.Collections.Generic");
 
                 // Has collection result?

@@ -24,6 +24,7 @@ namespace CodeGen.Data
         public string Implements { get; set; }
         public bool Collection { get; set; }
         public string CollectionInherits { get; set; }
+        public bool CollectionKeyed { get; set; }
         public bool CollectionResult { get; set; }
         public string EntityScope { get; set; } = "Common";
         public bool ExcludeEntity { get; set; }
