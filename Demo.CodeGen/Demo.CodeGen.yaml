@@ -51,8 +51,10 @@ entities:
   properties:
   - name: FirstName
     type: string
+    default: '"Hello"'
   - name: LastName
     type: string
+    default: '"World"'
 
 - name: Contact
   collection: true

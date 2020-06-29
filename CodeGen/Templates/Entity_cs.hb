@@ -18,7 +18,7 @@ namespace {{Namespace}}
         #region Privates
 
         {{#Properties}}
-        private {{Type}}{{#if Nullable}}?{{/if}} _{{camel Name}};
+        private {{Type}}{{#if Nullable}}?{{/if}} _{{camel Name}}{{#if Default}} = {{{Default}}}{{/if}};
         {{/Properties}}
 
         #endregion

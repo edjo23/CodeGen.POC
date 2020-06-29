@@ -16,8 +16,8 @@ namespace Demo.Service.Common.Entities
     {
         #region Privates
 
-        private string? _firstName;
-        private string? _lastName;
+        private string? _firstName = "Hello";
+        private string? _lastName = "World";
 
         #endregion
 

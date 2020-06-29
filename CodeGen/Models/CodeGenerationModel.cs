@@ -25,6 +25,7 @@ namespace CodeGen.Models
     public class Property
     {
         public string Name { get; set; }
+        public string Default { get; set; }
         public string Text { get; set; }
         public string Type { get; set; }
         public bool IsEntity { get; set; }
