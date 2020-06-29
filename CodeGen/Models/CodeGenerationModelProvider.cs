@@ -162,6 +162,7 @@ namespace CodeGen.Models
             var data = new Property();
             data.Name = config.Name;
             data.Type = config.Type;
+            data.IgnoreSerialization = config.IgnoreSerialization;
             data.Default = config.Default;
             data.Text = config.Text ?? config.Name;
             data.IsEntity = config.IsEntity;

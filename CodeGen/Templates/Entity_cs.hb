@@ -27,9 +27,11 @@ namespace {{Namespace}}
         #region Properties
 
         {{#each Properties}}
+        {{#unless IgnoreSerialization}}
         {{#if ../NewtonsoftJsonSerialization}}
         [JsonProperty("{{camel Name}}", DefaultValueHandling = DefaultValueHandling.{{#if EmitDefaultValue}}Include{{else}}Ignore{{/if}})]
         {{/if}}
+        {{/unless}}
         [Display(Name="{{DisplayName}}")]
         public {{Type}}{{#if Nullable}}?{{/if}} {{Name}}{{#unless ../HasBeefBaseClass}} { get; set; }{{/unless}}
         {{#if ../HasBeefBaseClass}}

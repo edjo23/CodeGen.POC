@@ -25,7 +25,6 @@ namespace Demo.Service.Common.Entities
         [Display(Name="ETag")]
         public string? ETag { get; set; }
         
-        [JsonProperty("changeLog", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [Display(Name="Change Log")]
         public ChangeLog? ChangeLog { get; set; }
 

@@ -25,6 +25,7 @@ namespace CodeGen.Models
     public class Property
     {
         public string Name { get; set; }
+        public bool IgnoreSerialization { get; set; }
         public string Default { get; set; }
         public string Text { get; set; }
         public string Type { get; set; }
@@ -39,7 +40,7 @@ namespace CodeGen.Models
         public string StringTransform { get; set; }
         public string DateTimeTransform { get; set; }
         public bool IsString => Type.ToLower() == "string";
-        public bool IsDateTime => Type.ToLower() == "DateTime";
+        public bool IsDateTime => Type == "DateTime";
     }
 
     public class OperationParameterModel

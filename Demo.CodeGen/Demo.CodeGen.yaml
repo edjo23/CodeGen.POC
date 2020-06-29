@@ -123,3 +123,4 @@ entities:
   - name: ChangeLog
     type: ChangeLog
     isEntity: true
+    ignoreSerialization: true
