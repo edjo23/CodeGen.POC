@@ -26,7 +26,7 @@ namespace {{Namespace}}
         {{/if}}
         #region Properties
 
-        {{#each Properties}}
+        {{#each DeclareProperties}}
         {{#unless IgnoreSerialization}}
         {{#if ../NewtonsoftJsonSerialization}}
         [JsonProperty("{{camel Name}}", DefaultValueHandling = DefaultValueHandling.{{#if EmitDefaultValue}}Include{{else}}Ignore{{/if}})]
@@ -55,16 +55,25 @@ namespace {{Namespace}}
 
         #endregion
         {{#if HasBeefBaseClass}}
-        {{#if EntityProperties.Count}}
+        {{#if DeclareEntityProperties}}
 
         #region IChangeTracking
 
         public override void AcceptChanges()
         {
-            {{#each EntityProperties}}
+            {{#each DeclareEntityProperties}}
             {{Name}}?.AcceptChanges();
             {{/each}}
             base.AcceptChanges();
+        }
+
+        public override void TrackChanges()
+        {
+      
+            {{#each DeclareEntityProperties}}
+            {{Name}}?.TrackChanges();
+            {{/each}}
+            base.TrackChanges();
         }
 
         #endregion
@@ -76,6 +85,10 @@ namespace {{Namespace}}
         public override bool HasUniqueKey => true;
 
         public override string[] UniqueKeyProperties => new string[] { {{#each UniqueKeys}}nameof({{Name}}){{#unless @last}}, {{/unless}}{{/each}} };
+
+        public static UniqueKey CreateUniqueKey({{#each UniqueKeys}}{{Type}} {{camel Name}}{{#unless @last}}, {{/unless}}{{/each}}) => new UniqueKey({{#each UniqueKeys}}{{camel Name}}{{#unless @last}}, {{/unless}}{{/each}});
+
+        public override UniqueKey UniqueKey => new UniqueKey({{#each UniqueKeys}}{{Name}}{{#unless @last}}, {{/unless}}{{/each}});
 
         #endregion
         {{/if}}
@@ -98,16 +111,20 @@ namespace {{Namespace}}
                 return false;
 
             return base.Equals((object)value)
-                {{#each Properties}}
+                {{#each DeclareProperties}}
                 && Equals({{Name}}, value.{{Name}}){{#if @last}};{{/if}}
                 {{/each}}
         }
+
+        public static bool operator == ({{Name}}? a, {{Name}}? b) => Equals(a, b);
+
+        public static bool operator != ({{Name}}? a, {{Name}}? b) => !Equals(a, b);
 
         public override int GetHashCode()
         {
             var hash = new HashCode();
 
-            {{#each Properties}}
+            {{#each DeclareProperties}}
             hash.Add({{Name}});
             {{/each}}
 
@@ -127,9 +144,12 @@ namespace {{Namespace}}
         public void CopyFrom({{Name}} from)
         {
             CopyFrom(({{Implements.[0]}})from);
-            {{#each Properties}}
-            {{Name}} = from.{{Name}};
+            {{#each DeclareProperties}}
+            {{Name}} = {{#if IsEntity}}CopyOrClone(from.{{Name}}, {{Name}}){{else}}from.{{Name}}{{/if}};
             {{/each}}
+            {{#if Partial}}
+            OnAfterCopyFrom(from);
+            {{/if}}
         }
 
         #endregion
@@ -155,19 +175,32 @@ namespace {{Namespace}}
             {{#each CleanProperties}}
             {{Name}} = Cleaner.Clean({{Name}}{{#if IsString}}, StringTrim.{{StringTrim}}, StringTransform.{{StringTransform}}{{/if}}{{#if IsDateTime}}, DateTimeTransform.{{DateTimeTransform}}{{/if}});
             {{/each}}
+            {{#if Partial}}
+            OnAfterCleanUp();
+            {{/if}}
         }
 
         public override bool IsInitial
         {
             get
             {
-              {{#each Properties}}
+              {{#each CleanProperties}}
               {{#if @first}}return {{else}}    && {{/if}}Cleaner.IsInitial({{Name}}){{#if @last}};{{/if}}
               {{/each}}
             }
         }
 
         #endregion
+        {{#if Partial}}
+
+        #region PartialMethods
+      
+        partial void OnAfterCleanUp();
+
+        partial void OnAfterCopyFrom({{Name}} from);
+
+        #endregion
+        {{/if}}
         {{/if}}
     }
     {{#if CollectionName}}

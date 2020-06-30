@@ -56,6 +56,7 @@ namespace CodeGen.Data
     public class Property
     {
         public string Name { get; set; }
+        public bool Inherited { get; set; }
         public bool IgnoreSerialization { get; set; }
         public string Default { get; set; }
         public string Text { get; set; }

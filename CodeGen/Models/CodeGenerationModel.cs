@@ -22,36 +22,6 @@ namespace CodeGen.Models
         public ControllerClass ControllerClass { get; set; }
     }
 
-    public class Property
-    {
-        public string Name { get; set; }
-        public bool IgnoreSerialization { get; set; }
-        public string Default { get; set; }
-        public string Text { get; set; }
-        public string Type { get; set; }
-        public bool IsEntity { get; set; }
-        public bool BubblePropertyChanged { get; set; }
-        public bool Nullable { get; set; }
-        public bool UnqiueKey { get; set; }
-        public bool Immutable { get; set; }
-        public string DisplayName { get; set; }
-        public bool EmitDefaultValue { get; set; }
-        public string StringTrim { get; set; }
-        public string StringTransform { get; set; }
-        public string DateTimeTransform { get; set; }
-        public bool IsString => Type.ToLower() == "string";
-        public bool IsDateTime => Type == "DateTime";
-    }
-
-    public class OperationParameterModel
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string EntityProperty { get; set; }
-        public bool Mandatory { get; set; }
-        public string Validator { get; set; } // TODO Probably should only be a Manager Operation version of class.
-    }
-
     public class EntityClass : ClassData
     {
         public bool Abstract { get; set; }
@@ -68,8 +38,33 @@ namespace CodeGen.Models
 
         public IList<Property> UniqueKeys => Properties.Where(o => o.UnqiueKey).ToList();
         public IList<Property> EntityProperties => Properties.Where(o => o.IsEntity).ToList();
-        public IList<Property> CleanProperties => Properties.Where(o => !o.Immutable).ToList();
+        public IList<Property> DeclareProperties => Properties.Where(o => !o.Inherited).ToList();
+        public IList<Property> DeclareUniqueKeys => Properties.Where(o => o.UnqiueKey && !o.Inherited).ToList();
+        public IList<Property> DeclareEntityProperties => Properties.Where(o => o.IsEntity && !o.Inherited).ToList();
+        public IList<Property> CleanProperties => Properties.Where(o => !o.Inherited && !o.Immutable).ToList();
         public bool CollectionKeyed => CollectionImplements.Any(o => o.StartsWith("EntityBaseKeyedCollection"));
+    }
+
+    public class Property
+    {
+        public string Name { get; set; }
+        public bool Inherited { get; set; }
+        public bool IgnoreSerialization { get; set; }
+        public string Default { get; set; }
+        public string Text { get; set; }
+        public string Type { get; set; }
+        public bool IsEntity { get; set; }
+        public bool BubblePropertyChanged { get; set; }
+        public bool Nullable { get; set; }
+        public bool UnqiueKey { get; set; }
+        public bool Immutable { get; set; }
+        public string DisplayName { get; set; }
+        public bool EmitDefaultValue { get; set; }
+        public string StringTrim { get; set; }
+        public string StringTransform { get; set; }
+        public string DateTimeTransform { get; set; }
+        public bool IsString => Type.ToLower() == "string";
+        public bool IsDateTime => Type == "DateTime";
     }
 
     public class DataInterface : ClassData
@@ -127,11 +122,21 @@ namespace CodeGen.Models
         public bool PrivateConstructor { get; set; }
     }
 
+    public class OperationParameter
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string EntityProperty { get; set; }
+        public bool Mandatory { get; set; }
+        public string Validator { get; set; } // TODO Probably should only be a Manager Operation version of class.
+    }
+
+
     public class OperationModelBase
     {
         public string Name { get; set; }
         public string ReturnType { get; set; }
-        public List<OperationParameterModel> Parameters { get; set; } = new List<OperationParameterModel>();
+        public List<OperationParameter> Parameters { get; set; } = new List<OperationParameter>();
         public bool IsCreate { get; set; }
         public bool IsGet { get; set; }
         public bool IsGetColl { get; set; }
@@ -139,6 +144,6 @@ namespace CodeGen.Models
         public bool IsDelete { get; set; }
 
         public string UnderlyingReturnType => ReturnType?.TrimEnd('?');
-        public OperationParameterModel Parameter => Parameters.FirstOrDefault(); // TODO Remove
+        public OperationParameter Parameter => Parameters.FirstOrDefault(); // TODO Remove
     }
 }

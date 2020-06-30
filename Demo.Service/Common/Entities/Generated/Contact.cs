@@ -57,6 +57,10 @@ namespace Demo.Service.Common.Entities
 
         public override string[] UniqueKeyProperties => new string[] { nameof(Id) };
 
+        public static UniqueKey CreateUniqueKey(Guid id) => new UniqueKey(id);
+
+        public override UniqueKey UniqueKey => new UniqueKey(Id);
+
         #endregion
 
         #region IsEquitable
@@ -81,6 +85,10 @@ namespace Demo.Service.Common.Entities
                 && Equals(FirstName, value.FirstName)
                 && Equals(LastName, value.LastName);
         }
+
+        public static bool operator == (Contact? a, Contact? b) => Equals(a, b);
+
+        public static bool operator != (Contact? a, Contact? b) => !Equals(a, b);
 
         public override int GetHashCode()
         {

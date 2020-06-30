@@ -64,6 +64,10 @@ namespace Demo.Service.Common.Entities
                 && Equals(LastName, value.LastName);
         }
 
+        public static bool operator == (AbstractEntity? a, AbstractEntity? b) => Equals(a, b);
+
+        public static bool operator != (AbstractEntity? a, AbstractEntity? b) => !Equals(a, b);
+
         public override int GetHashCode()
         {
             var hash = new HashCode();
@@ -89,6 +93,7 @@ namespace Demo.Service.Common.Entities
             CopyFrom((EntityBase)from);
             FirstName = from.FirstName;
             LastName = from.LastName;
+            OnAfterCopyFrom(from);
         }
 
         #endregion
@@ -100,6 +105,7 @@ namespace Demo.Service.Common.Entities
             base.CleanUp();
             FirstName = Cleaner.Clean(FirstName, StringTrim.UseDefault, StringTransform.UseDefault);
             LastName = Cleaner.Clean(LastName, StringTrim.UseDefault, StringTransform.UseDefault);
+            OnAfterCleanUp();
         }
 
         public override bool IsInitial
@@ -110,6 +116,14 @@ namespace Demo.Service.Common.Entities
                   && Cleaner.IsInitial(LastName);
             }
         }
+
+        #endregion
+
+        #region PartialMethods
+      
+        partial void OnAfterCleanUp();
+
+        partial void OnAfterCopyFrom(AbstractEntity from);
 
         #endregion
     }

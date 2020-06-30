@@ -161,6 +161,7 @@ namespace CodeGen.Models
         {
             var data = new Property();
             data.Name = config.Name;
+            data.Inherited = config.Inherited;
             data.Type = config.Type;
             data.IgnoreSerialization = config.IgnoreSerialization;
             data.Default = config.Default;
@@ -227,7 +228,7 @@ namespace CodeGen.Models
                     if (op.IsGetColl && o.PagingArgs)
                     {
                         data.Usings.Add("Beef.Entities");
-                        op.Parameters.Add(new OperationParameterModel { Name = "pagingArgs", Type = "PagingArgs?" });
+                        op.Parameters.Add(new OperationParameter { Name = "pagingArgs", Type = "PagingArgs?" });
                     }
 
                     return op;
@@ -283,7 +284,7 @@ namespace CodeGen.Models
                     op.EventAction = o.EventPublish ?? entityConfig.EventPublish ?? true ? (op.IsCreate ? "Created" : op.IsUpdate ? "Updated" : op.IsDelete ? "Deleted" : null) : null;
 
                     if (op.IsGetColl && o.PagingArgs)
-                        op.Parameters.Add(new OperationParameterModel { Name = "pagingArgs", Type = "PagingArgs?" });
+                        op.Parameters.Add(new OperationParameter { Name = "pagingArgs", Type = "PagingArgs?" });
 
                     return op;
                 }).ToList();
@@ -336,13 +337,13 @@ namespace CodeGen.Models
                     var op = CreateOperation<OperationModelBase>(o, entityClass);
 
                     if (op.IsGetColl && o.PagingArgs)
-                        op.Parameters.Add(new OperationParameterModel { Name = "pagingArgs", Type = "PagingArgs?" });
+                        op.Parameters.Add(new OperationParameter { Name = "pagingArgs", Type = "PagingArgs?" });
 
                     return op;
                 }).ToList();
             }
 
-            if (data.Operations.SelectMany(o => o.Parameters ?? new List<OperationParameterModel>()).Any(o => o.Validator != null))
+            if (data.Operations.SelectMany(o => o.Parameters ?? new List<OperationParameter>()).Any(o => o.Validator != null))
                 data.Usings.Add($"{data.Namespace}.Validation");
 
             return data;
@@ -384,7 +385,7 @@ namespace CodeGen.Models
 
                 if (op.IsUpdate)
                 {
-                    op.Parameters.AddRange(entityClass.Properties.Where(o => o.UnqiueKey).Select(o => new OperationParameterModel { Name = o.Name.ToCamelCase(), Type = o.Type, EntityProperty = o.Name }));
+                    op.Parameters.AddRange(entityClass.Properties.Where(o => o.UnqiueKey).Select(o => new OperationParameter { Name = o.Name.ToCamelCase(), Type = o.Type, EntityProperty = o.Name }));
                     op.WebApiRoute = op.WebApiRoute ?? String.Join('/', op.Parameters.Skip(1).Select(o => $"{{{o.Name}}}"));
                 }
 
@@ -403,27 +404,27 @@ namespace CodeGen.Models
                 case "Create":
                     op.IsCreate = true;
                     op.ReturnType = entityClass.Name;
-                    op.Parameters = new List<OperationParameterModel> { new OperationParameterModel { Name = "value", Type = entityClass.Name, Mandatory = true, Validator = config.Validator ?? entityClass.Validator } };
+                    op.Parameters = new List<OperationParameter> { new OperationParameter { Name = "value", Type = entityClass.Name, Mandatory = true, Validator = config.Validator ?? entityClass.Validator } };
                     break;
                 case "Get":
                     op.IsGet = true;
                     op.ReturnType = $"{entityClass.Name}?";
-                    op.Parameters = entityClass.Properties?.Where(o => o.UnqiueKey).Select(o => new OperationParameterModel { Name = o.Name.ToCamelCase(), Type = o.Type, Mandatory = true, Validator = config.Validator ?? entityClass.Validator }).ToList();
+                    op.Parameters = entityClass.Properties?.Where(o => o.UnqiueKey).Select(o => new OperationParameter { Name = o.Name.ToCamelCase(), Type = o.Type, Mandatory = true, Validator = config.Validator ?? entityClass.Validator }).ToList();
                     break;
                 case "Update":
                     op.IsUpdate = true;
                     op.ReturnType = entityClass.Name;
-                    op.Parameters = new List<OperationParameterModel> { new OperationParameterModel { Name = "value", Type = entityClass.Name, Mandatory = true, Validator = config.Validator ?? entityClass.Validator } };
+                    op.Parameters = new List<OperationParameter> { new OperationParameter { Name = "value", Type = entityClass.Name, Mandatory = true, Validator = config.Validator ?? entityClass.Validator } };
                     break;
                 case "Delete":
                     op.IsDelete = true;
                     op.ReturnType = null;
-                    op.Parameters = entityClass.Properties?.Where(o => o.UnqiueKey).Select(o => new OperationParameterModel { Name = o.Name.ToCamelCase(), Type = o.Type, Mandatory = true, Validator = config.Validator/* ?? entityClass.Validator*/ }).ToList();
+                    op.Parameters = entityClass.Properties?.Where(o => o.UnqiueKey).Select(o => new OperationParameter { Name = o.Name.ToCamelCase(), Type = o.Type, Mandatory = true, Validator = config.Validator/* ?? entityClass.Validator*/ }).ToList();
                     break;
                 case "GetColl":
                     op.IsGetColl = true;
                     op.ReturnType = config.PagingArgs ? $"{entityClass.Name}CollectionResult" : $"{entityClass.Name}Collection";
-                    op.Parameters = config.Parameters?.Select(o => new OperationParameterModel { Name = o.Name.ToCamelCase(), Type = o.Type, Validator = o.Validator, Mandatory = o.Mandatory.GetValueOrDefault(true) }).ToList();
+                    op.Parameters = config.Parameters?.Select(o => new OperationParameter { Name = o.Name.ToCamelCase(), Type = o.Type, Validator = o.Validator, Mandatory = o.Mandatory.GetValueOrDefault(true) }).ToList();
                     break;
             }
             return op;

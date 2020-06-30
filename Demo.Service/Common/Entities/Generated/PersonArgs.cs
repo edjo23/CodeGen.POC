@@ -63,6 +63,10 @@ namespace Demo.Service.Common.Entities
                 && Equals(LastName, value.LastName);
         }
 
+        public static bool operator == (PersonArgs? a, PersonArgs? b) => Equals(a, b);
+
+        public static bool operator != (PersonArgs? a, PersonArgs? b) => !Equals(a, b);
+
         public override int GetHashCode()
         {
             var hash = new HashCode();

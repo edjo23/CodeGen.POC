@@ -77,6 +77,13 @@ namespace Demo.Service.Common.Entities
             base.AcceptChanges();
         }
 
+        public override void TrackChanges()
+        {
+      
+            ChangeLog?.TrackChanges();
+            base.TrackChanges();
+        }
+
         #endregion
 
         #region UniqueKey
@@ -84,6 +91,10 @@ namespace Demo.Service.Common.Entities
         public override bool HasUniqueKey => true;
 
         public override string[] UniqueKeyProperties => new string[] { nameof(Id) };
+
+        public static UniqueKey CreateUniqueKey(Guid id) => new UniqueKey(id);
+
+        public override UniqueKey UniqueKey => new UniqueKey(Id);
 
         #endregion
 
@@ -111,6 +122,10 @@ namespace Demo.Service.Common.Entities
                 && Equals(ETag, value.ETag)
                 && Equals(ChangeLog, value.ChangeLog);
         }
+
+        public static bool operator == (Person? a, Person? b) => Equals(a, b);
+
+        public static bool operator != (Person? a, Person? b) => !Equals(a, b);
 
         public override int GetHashCode()
         {
@@ -142,7 +157,7 @@ namespace Demo.Service.Common.Entities
             FirstName = from.FirstName;
             LastName = from.LastName;
             ETag = from.ETag;
-            ChangeLog = from.ChangeLog;
+            ChangeLog = CopyOrClone(from.ChangeLog, ChangeLog);
         }
 
         #endregion
