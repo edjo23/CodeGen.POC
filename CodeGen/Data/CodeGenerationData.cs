@@ -58,6 +58,7 @@ namespace CodeGen.Data
         public string Name { get; set; }
         public bool Inherited { get; set; }
         public bool IgnoreSerialization { get; set; }
+        public bool EmitDefaultValue { get; set; }
         public string Default { get; set; }
         public string Text { get; set; }
         public string Type { get; set; }

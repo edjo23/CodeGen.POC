@@ -164,6 +164,7 @@ namespace CodeGen.Models
             data.Inherited = config.Inherited;
             data.Type = config.Type;
             data.IgnoreSerialization = config.IgnoreSerialization;
+            data.EmitDefaultValue = config.EmitDefaultValue;
             data.Default = config.Default;
             data.Text = config.Text ?? config.Name;
             data.IsEntity = config.IsEntity;

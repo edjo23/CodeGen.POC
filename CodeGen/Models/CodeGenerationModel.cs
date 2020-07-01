@@ -50,6 +50,7 @@ namespace CodeGen.Models
         public string Name { get; set; }
         public bool Inherited { get; set; }
         public bool IgnoreSerialization { get; set; }
+        public bool EmitDefaultValue { get; set; }
         public string Default { get; set; }
         public string Text { get; set; }
         public string Type { get; set; }
@@ -59,7 +60,6 @@ namespace CodeGen.Models
         public bool UnqiueKey { get; set; }
         public bool Immutable { get; set; }
         public string DisplayName { get; set; }
-        public bool EmitDefaultValue { get; set; }
         public string StringTrim { get; set; }
         public string StringTransform { get; set; }
         public string DateTimeTransform { get; set; }
