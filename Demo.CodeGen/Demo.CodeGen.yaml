@@ -124,3 +124,6 @@ entities:
     type: ChangeLog
     isEntity: true
     ignoreSerialization: true
+  - name: IsAwesome
+    inherited: true
+    type: bool
