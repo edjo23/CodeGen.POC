@@ -23,7 +23,7 @@ namespace Demo.Service.Common.Entities
         
         [JsonProperty("eTag", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [Display(Name="ETag")]
-        public string? ETag { get; set; }
+        public string ETag { get; set; } = "";
         
         [Display(Name="Change Log")]
         public ChangeLog? ChangeLog { get; set; }

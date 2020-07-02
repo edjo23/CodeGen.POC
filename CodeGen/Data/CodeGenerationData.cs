@@ -62,6 +62,7 @@ namespace CodeGen.Data
         public string Default { get; set; }
         public string Text { get; set; }
         public string Type { get; set; }
+        public bool? Nullable { get; set; }
         public bool UniqueKey { get; set; }
         public bool IsEntity { get; set; }
         public bool BubblePropertyChanged { get; set; }

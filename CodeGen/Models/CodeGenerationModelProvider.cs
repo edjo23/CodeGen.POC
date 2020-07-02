@@ -169,7 +169,7 @@ namespace CodeGen.Models
             data.Text = config.Text ?? config.Name;
             data.IsEntity = config.IsEntity;
             data.BubblePropertyChanged = config.BubblePropertyChanged || config.IsEntity;
-            data.Nullable = !config.UniqueKey;
+            data.Nullable = config.Nullable ?? !config.UniqueKey;
             data.UnqiueKey = config.UniqueKey;
             data.Immutable = false;
             data.DisplayName = data.Name.ToDisplayName();

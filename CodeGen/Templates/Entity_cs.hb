@@ -33,7 +33,7 @@ namespace {{Namespace}}
         {{/if}}
         {{/unless}}
         [Display(Name="{{DisplayName}}")]
-        public {{Type}}{{#if Nullable}}?{{/if}} {{Name}}{{#unless ../HasBeefBaseClass}} { get; set; }{{/unless}}
+        public {{Type}}{{#if Nullable}}?{{/if}} {{Name}}{{#unless ../HasBeefBaseClass}} { get; set; }{{#if Default}} = {{{Default}}};{{/if}}{{/unless}}
         {{#if ../HasBeefBaseClass}}
         {
             get => _{{camel Name}};

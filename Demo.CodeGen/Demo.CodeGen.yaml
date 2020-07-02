@@ -119,6 +119,8 @@ entities:
     uniqueKey: true
   - name: ETag
     type: string
+    nullable: false
+    default: '""'
     ArgumentName: etag
   - name: ChangeLog
     type: ChangeLog
