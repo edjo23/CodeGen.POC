@@ -66,6 +66,7 @@ namespace CodeGen.Data
         public bool UniqueKey { get; set; }
         public bool IsEntity { get; set; }
         public bool BubblePropertyChanged { get; set; }
+        public bool ExcludeCleanup { get; set; }
     }
 
     public class Operations

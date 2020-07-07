@@ -172,6 +172,7 @@ namespace CodeGen.Models
             data.Nullable = config.Nullable ?? !config.UniqueKey;
             data.UnqiueKey = config.UniqueKey;
             data.Immutable = false;
+            data.Clean = !data.Immutable && !data.Inherited && !config.ExcludeCleanup;
             data.DisplayName = data.Name.ToDisplayName();
 
             if (data.IsString)

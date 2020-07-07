@@ -41,7 +41,7 @@ namespace CodeGen.Models
         public IList<Property> DeclareProperties => Properties.Where(o => !o.Inherited).ToList();
         public IList<Property> DeclareUniqueKeys => Properties.Where(o => o.UnqiueKey && !o.Inherited).ToList();
         public IList<Property> DeclareEntityProperties => Properties.Where(o => o.IsEntity && !o.Inherited).ToList();
-        public IList<Property> CleanProperties => Properties.Where(o => !o.Inherited && !o.Immutable).ToList();
+        public IList<Property> CleanProperties => Properties.Where(o => o.Clean).ToList();
         public bool CollectionKeyed => CollectionImplements.Any(o => o.StartsWith("EntityBaseKeyedCollection"));
     }
 
@@ -57,6 +57,7 @@ namespace CodeGen.Models
         public bool IsEntity { get; set; }
         public bool BubblePropertyChanged { get; set; }
         public bool Nullable { get; set; }
+        public bool Clean { get; set; } = true;
         public bool UnqiueKey { get; set; }
         public bool Immutable { get; set; }
         public string DisplayName { get; set; }
