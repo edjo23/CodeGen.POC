@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -68,7 +69,10 @@ namespace CodeGen.Models
                 if (entityConfig.ExcludeManager == false)
                     model.Manager = TransformToManagerClass(entityConfig, genModel, model.EntityClass, model.DataServiceInterface);
                 if (entityConfig.ExcludeWebApi == false)
+                {
                     model.ControllerClass = TransformToControllerClass(entityConfig, genModel, model.EntityClass, model.ManagerInterface);
+                    model.ServiceAgentClass = TransformToServiceAgentClass(entityConfig, genModel, model.EntityClass, model.ControllerClass);
+                }
             }
 
             return model;
@@ -392,6 +396,35 @@ namespace CodeGen.Models
                 }
 
                 return op;
+            }).ToList();
+
+            return data;
+        }
+
+        private ServiceAgentClass TransformToServiceAgentClass(Data.Entity entityConfig, CodeGenerationModel genModel, EntityClass entityClass, ControllerClass controllerClass)
+        {
+            var data = new ServiceAgentClass();
+            data.Name = $"{entityClass.Name}ServiceAgent";
+            data.Namespace = $"{genModel.BaseNamespace}.Common.ServiceAgents";
+            data.Partial = false;
+            data.PrivateConstructor = false;
+
+            data.Usings.Add("Beef.WebApi");
+            data.Usings.Add(entityClass.Namespace);
+            data.Usings.Add("System");
+            data.Usings.Add("System.Net.Http");
+            data.Usings.Add("System.Threading.Tasks");
+
+            data.Operations = entityConfig.Operations.Select(o =>
+            {
+                var op = CreateOperation<ControllerOperationModel>(o, entityClass);
+                
+                var webOp = controllerClass.Operations.First(w => w.Name == op.Name);
+                op.WebApiRoute = string.Join("/", new string[] { controllerClass.WebApiRoutePrefix, webOp.WebApiRoute }.Where(o => o != null));
+                op.HasPagingArgs = webOp.HasPagingArgs;
+
+                return op;
+
             }).ToList();
 
             return data;

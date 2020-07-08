@@ -20,6 +20,7 @@ namespace CodeGen.Models
         public ManagerInterface ManagerInterface { get; set; }
         public ManagerClass Manager { get; set; }
         public ControllerClass ControllerClass { get; set; }
+        public ServiceAgentClass ServiceAgentClass { get; set; }
     }
 
     public class EntityClass : ClassData
@@ -113,6 +114,12 @@ namespace CodeGen.Models
         public string WebApiRoute { get; set; }
         public bool HasPagingArgs { get; set; }
     }
+
+    public class ServiceAgentClass : ClassData
+    {
+        public List<ControllerOperationModel> Operations { get; set; } = new List<ControllerOperationModel>();
+    }
+
 
     public class ClassData
     {

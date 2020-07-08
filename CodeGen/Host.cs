@@ -107,6 +107,8 @@ namespace CodeGen
 
                         { "Generator:Controller:TemplatePath", "Templates/EntityWebApiController_cs.hb" },
                         { "Generator:Controller:TargetPath", "../../../../$()/Controllers/Generated" },
+                        { "Generator:ServiceAgent:TemplatePath", "Templates/EntityWebApiServiceAgent_cs.hb" },
+                        { "Generator:ServiceAgent:TargetPath", "../../../../$()/Common/ServiceAgents/Generated" },
 
                         { "Generator:ServiceCollectionExtension:TemplatePath", "Templates/ServiceCollectionExtension_cs.hb" },
                         { "Generator:ServiceCollectionExtension:TargetPath", "../../../../$()/Generated" },
@@ -145,6 +147,9 @@ namespace CodeGen
 
             serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:Controller", new EntityWebApiControllerCodeGenerateOptions()));
             serviceCollection.AddTransient<EntityWebApiControllerCodeGenerator>();
+
+            serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:ServiceAgent", new EntityWebApiServiceAgentCodeGenerateOptions()));
+            serviceCollection.AddTransient<EntityWebApiServiceAgentCodeGenerator>();
 
             serviceCollection.AddOption((sp, c) => c.BindConfig("Generator:ServiceCollectionExtension", new ServiceCollectionExtensionCodeGenerateOptions()));
             serviceCollection.AddSingleton<ServiceCollectionExtensionsModelProvider>();
