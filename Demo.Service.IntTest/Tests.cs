@@ -13,8 +13,8 @@ namespace Demo.Service.IntTest
 {
     public class Tests
     {
-        private TestFactory<Startup> _defaultFactory;
-        private TestFactory<CustomWebApplicationFactory, Startup> _customFactory;
+        private AgentTesterFactory<Startup> _defaultFactory;
+        private AgentTesterFactory<CustomWebApplicationFactory, Startup> _customFactory;
         private Guid _testId = Guid.NewGuid();
 
         [OneTimeSetUp]
@@ -23,7 +23,7 @@ namespace Demo.Service.IntTest
             var mockService = new Mock<IContactManager>();
             mockService.Setup(o => o.GetCollAsync()).Returns(Task.FromResult(new ContactCollection() { new Contact { Id = _testId } }));
 
-            _defaultFactory = new TestFactory<Startup>(whb =>
+            _defaultFactory = new AgentTesterFactory<Startup>(whb =>
             {
                 whb.ConfigureTestServices(sc =>
                 {
@@ -31,14 +31,15 @@ namespace Demo.Service.IntTest
                 });
             });
 
-            _customFactory = new TestFactory<CustomWebApplicationFactory, Startup>();
+            _customFactory = new AgentTesterFactory<CustomWebApplicationFactory, Startup>();
         }
 
         [Test]
-        public async Task WithDefaultFactory()
+        public void WithDefaultFactory()
         {
-            var client = _defaultFactory.CreateAgent<ContactServiceAgent>();
-            var result = await client.GetCollAsync();
+            var result = _defaultFactory.CreateTester<ContactServiceAgent>()
+                .ExpectStatusCode(System.Net.HttpStatusCode.OK)
+                .Run(o => o.GetCollAsync());
 
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(1, result.Value.Count);
@@ -47,10 +48,11 @@ namespace Demo.Service.IntTest
 
 
         [Test]
-        public async Task WithCustomFactory()
+        public void WithCustomFactory()
         {
-            var client = _customFactory.CreateAgent<ContactServiceAgent>();
-            var result = await client.GetCollAsync();
+            var result = _customFactory.CreateTester<ContactServiceAgent>()
+                .ExpectStatusCode(System.Net.HttpStatusCode.OK)
+                .Run(o => o.GetCollAsync());
 
             Assert.IsTrue(result.IsSuccess);
         }
