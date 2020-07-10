@@ -37,7 +37,7 @@ namespace Demo.Service.IntTest
         [Test]
         public void WithDefaultFactory()
         {
-            var result = _defaultFactory.CreateAgentTester<ContactServiceAgent>()
+            var result = _defaultFactory.Create<ContactServiceAgent>()
                 .ExpectStatusCode(System.Net.HttpStatusCode.OK)
                 .Run(o => o.GetCollAsync());
 
@@ -50,7 +50,7 @@ namespace Demo.Service.IntTest
         [Test]
         public void WithCustomFactory()
         {
-            var result = _customFactory.CreateAgentTester<ContactServiceAgent>()
+            var result = _customFactory.Create<ContactServiceAgent>()
                 .ExpectStatusCode(System.Net.HttpStatusCode.OK)
                 .Run(o => o.GetCollAsync());
 

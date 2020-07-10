@@ -38,7 +38,7 @@ namespace Demo.Service.IntTest
 
         private readonly WebApplicationFactory<TEntryPoint> _waFactory;
 
-        public AgentTester<TAgent> CreateAgentTester<TAgent>()
+        public AgentTester<TAgent> Create<TAgent>()
             where TAgent : WebApiServiceAgentBase
         {
             var httpClient = _waFactory.CreateClient();
