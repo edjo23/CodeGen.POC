@@ -411,8 +411,8 @@ namespace CodeGen.Models
 
             data.Usings.Add("Beef.WebApi");
             data.Usings.Add(entityClass.Namespace);
+            data.Usings.Add("Microsoft.Extensions.Options");
             data.Usings.Add("System");
-            data.Usings.Add("System.Net.Http");
             data.Usings.Add("System.Threading.Tasks");
 
             data.Operations = entityConfig.Operations.Select(o =>

@@ -13,7 +13,7 @@ namespace Demo.Service.Api
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection MapEntityDataComponents(this IServiceCollection services)
+        public static IServiceCollection AddEntityDataComponents(this IServiceCollection services)
         {
             services.AddTransient<IPersonData, PersonData>();
             services.AddTransient<IContactData, ContactData>();
@@ -21,7 +21,7 @@ namespace Demo.Service.Api
             return services;
         }
 
-        public static IServiceCollection MapEntityDataServiceComponents(this IServiceCollection services)
+        public static IServiceCollection AddEntityDataServiceComponents(this IServiceCollection services)
         {
             services.AddTransient<IPersonDataSvc, PersonDataSvc>();
             services.AddTransient<IContactDataSvc, ContactDataSvc>();
@@ -29,7 +29,7 @@ namespace Demo.Service.Api
             return services;
         }
 
-        public static IServiceCollection MapEntityManagerComponents(this IServiceCollection services)
+        public static IServiceCollection AddEntityManagerComponents(this IServiceCollection services)
         {
             services.AddTransient<IPersonManager, PersonManager>();
             services.AddTransient<IContactManager, ContactManager>();

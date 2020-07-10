@@ -25,11 +25,10 @@ namespace Demo.Service
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.MapEntityDataComponents();
-            services.MapEntityDataServiceComponents();
-            services.MapEntityManagerComponents();
-            services.AddControllers()
-                .AddNewtonsoftJson();
+            services.AddEntityDataComponents();
+            services.AddEntityDataServiceComponents();
+            services.AddEntityManagerComponents();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSingleton<IDataStorage, JsonDataStorage>();
         }
 

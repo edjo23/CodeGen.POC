@@ -12,7 +12,7 @@ namespace {{Namespace}}
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection MapEntityDataComponents(this IServiceCollection services)
+        public static IServiceCollection AddEntityDataComponents(this IServiceCollection services)
         {
             {{#each EntitiesWithDataClasses}}
             services.AddTransient<{{DataInterface.Name}}, {{DataClass.Name}}>();
@@ -21,7 +21,7 @@ namespace {{Namespace}}
             return services;
         }
 
-        public static IServiceCollection MapEntityDataServiceComponents(this IServiceCollection services)
+        public static IServiceCollection AddEntityDataServiceComponents(this IServiceCollection services)
         {
             {{#each EntitiesWithDataServiceClasses}}
             services.AddTransient<{{DataServiceInterface.Name}}, {{DataServiceClass.Name}}>();
@@ -30,7 +30,7 @@ namespace {{Namespace}}
             return services;
         }
 
-        public static IServiceCollection MapEntityManagerComponents(this IServiceCollection services)
+        public static IServiceCollection AddEntityManagerComponents(this IServiceCollection services)
         {
             {{#each EntitiesWithManagerClasses}}
             services.AddTransient<{{ManagerInterface.Name}}, {{Manager.Name}}>();

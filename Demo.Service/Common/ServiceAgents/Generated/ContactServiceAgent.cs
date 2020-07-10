@@ -2,16 +2,16 @@
 
 using Beef.WebApi;
 using Demo.Service.Common.Entities;
+using Microsoft.Extensions.Options;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Demo.Service.Common.ServiceAgents
 {
     public class ContactServiceAgent : WebApiServiceAgentBase<ContactServiceAgent>
     {
-        public ContactServiceAgent() : base() { }
-        public ContactServiceAgent(HttpClient? httpClient = null, Action<HttpRequestMessage>? beforeRequest = null) : base(httpClient, beforeRequest) { }
+        public ContactServiceAgent(IOptionsMonitor<ServiceAgentOptions> namedOptionsAccessor)
+            : base(namedOptionsAccessor.Get(typeof(ContactServiceAgent).FullName).HttpClient, namedOptionsAccessor.Get(nameof(ContactServiceAgent)).BeforeRequest) { }
 
         public async Task<WebApiAgentResult<ContactCollection>> GetCollAsync()
         {

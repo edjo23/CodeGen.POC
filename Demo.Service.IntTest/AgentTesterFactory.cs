@@ -1,6 +1,8 @@
 ﻿using Beef.WebApi;
+using Demo.Service.Common.ServiceAgents;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
 using System.Net;
@@ -36,8 +38,8 @@ namespace Demo.Service.IntTest
 
         private readonly WebApplicationFactory<TEntryPoint> _waFactory;
 
-        public AgentTester<TAgent> CreateTester<TAgent>()
-            where TAgent : class
+        public AgentTester<TAgent> CreateAgentTester<TAgent>()
+            where TAgent : WebApiServiceAgentBase
         {
             var httpClient = _waFactory.CreateClient();
             return new AgentTester<TAgent>(httpClient);
@@ -45,15 +47,23 @@ namespace Demo.Service.IntTest
     }
 
     public class AgentTester<TAgent>
-        where TAgent : class
+        where TAgent : WebApiServiceAgentBase
     {
         public AgentTester(HttpClient httpClient)
         {
-            Agent = Activator.CreateInstance(typeof(TAgent), new object[] { httpClient, null }) as TAgent;
+            var sc = new ServiceCollection();
+            sc.AddSingleton<TAgent>();
+            sc.Configure<ServiceAgentOptions>(typeof(TAgent).FullName, options =>
+            {
+                options.HttpClient = httpClient;
+            });
+            _serviceProvider = sc.BuildServiceProvider();
         }
 
-        public readonly TAgent Agent;
+        private IServiceProvider _serviceProvider;
         private HttpStatusCode? _expectedStatusCode;
+
+        public TAgent Agent => _serviceProvider.GetService<TAgent>();
 
         public AgentTester<TAgent> ExpectStatusCode(HttpStatusCode statusCode)
         {
