@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Service.Common.ServiceAgents
 {
-    public class PersonServiceAgent : WebApiServiceAgentBase<PersonServiceAgent>
+    public partial class PersonServiceAgent : WebApiServiceAgentBase<PersonServiceAgent>
     {
         public PersonServiceAgent(IOptionsMonitor<ServiceAgentOptions> namedOptionsAccessor)
             : base(namedOptionsAccessor.Get(typeof(PersonServiceAgent).FullName).HttpClient, namedOptionsAccessor.Get(nameof(PersonServiceAgent)).BeforeRequest) { }

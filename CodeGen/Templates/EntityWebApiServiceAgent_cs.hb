@@ -6,7 +6,7 @@ using {{this}};
 
 namespace {{ServiceAgentClass.Namespace}}
 {
-    public class {{ServiceAgentClass.Name}} : WebApiServiceAgentBase<{{ServiceAgentClass.Name}}>
+    public partial class {{ServiceAgentClass.Name}} : WebApiServiceAgentBase<{{ServiceAgentClass.Name}}>
     {
         public {{ServiceAgentClass.Name}}(IOptionsMonitor<ServiceAgentOptions> namedOptionsAccessor)
             : base(namedOptionsAccessor.Get(typeof({{ServiceAgentClass.Name}}).FullName).HttpClient, namedOptionsAccessor.Get(nameof({{ServiceAgentClass.Name}})).BeforeRequest) { }

@@ -2,9 +2,13 @@
 using Demo.Service.Common.ServiceAgents;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.StaticFiles.Infrastructure;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -29,9 +33,18 @@ namespace Demo.Service.IntTest
 
             Action<IWebHostBuilder> rootConfiguration = (whb) =>
             {
-                // TODO - Add default test services, e.g. reference data services, event publishers, etc.
+                whb.ConfigureAppConfiguration(cb =>
+                {
+                    cb.AddInMemoryCollection(new Dictionary<string, string> { { "base-setting", "base-value" }, { "default-setting", "default-value" } });
+                });
+
+                whb.ConfigureTestServices(sc =>
+                {
+                    // TODO - Add default test services, e.g. reference data services, event publishers, etc.
+                });
+
                 configuration?.Invoke(whb);
-            };
+            };            
 
             _waFactory = _waFactory.WithWebHostBuilder(rootConfiguration);
         }

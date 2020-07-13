@@ -1,12 +1,17 @@
 using Demo.Service.Business;
 using Demo.Service.Common.Entities;
 using Demo.Service.Common.ServiceAgents;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Demo.Service.IntTest
@@ -25,6 +30,11 @@ namespace Demo.Service.IntTest
 
             _defaultFactory = new AgentTesterFactory<Startup>(whb =>
             {
+                whb.ConfigureAppConfiguration(cb =>
+                {
+                    cb.AddInMemoryCollection(new Dictionary<string, string> { { "default-setting", "custom-value" } });
+                });
+
                 whb.ConfigureTestServices(sc =>
                 {
                     sc.Replace(ServiceDescriptor.Transient<IContactManager>((sp) => mockService.Object));
@@ -55,6 +65,26 @@ namespace Demo.Service.IntTest
                 .Run(o => o.GetCollAsync());
 
             Assert.IsTrue(result.IsSuccess);
+        }
+
+        [Test]
+        public void WithBaseConfig()
+        {
+            var result = _defaultFactory.Create<PersonServiceAgent>()
+                .ExpectStatusCode(System.Net.HttpStatusCode.OK)
+                .Run(o => o.GetConfig("base-setting"));
+
+            Assert.AreEqual("base-value", result.Value);
+        }
+
+        [Test]
+        public void WithFixtureConfig()
+        {
+            var result = _defaultFactory.Create<PersonServiceAgent>()
+                .ExpectStatusCode(System.Net.HttpStatusCode.OK)
+                .Run(o => o.GetConfig("default-setting"));
+
+            Assert.AreEqual("custom-value", result.Value);
         }
     }
 }
