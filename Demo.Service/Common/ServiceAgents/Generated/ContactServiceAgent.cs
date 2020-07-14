@@ -13,10 +13,16 @@ namespace Demo.Service.Common.ServiceAgents
         public ContactServiceAgent(IOptionsMonitor<ServiceAgentOptions> namedOptionsAccessor)
             : base(namedOptionsAccessor.Get(typeof(ContactServiceAgent).FullName).HttpClient, namedOptionsAccessor.Get(nameof(ContactServiceAgent)).BeforeRequest) { }
 
-        public async Task<WebApiAgentResult<ContactCollection>> GetCollAsync()
+        public async Task<WebApiAgentResult<Contact?>> GetAsync(Guid id, WebApiRequestOptions? requestOptions = null)
         {
-            return await base.GetAsync<ContactCollection>("api/v1/contacts/", requestOptions: null,
-                args: Array.Empty<WebApiArg>());
+            return await base.GetAsync<Contact?>("api/v1/contacts/{id}", requestOptions: requestOptions,
+                args: new WebApiArg[] { new WebApiArg<Guid>("id", id) });
+        }
+
+        public async Task<WebApiAgentResult<ContactCollection>> GetCollAsync(WebApiRequestOptions? requestOptions = null)
+        {
+            return await base.GetAsync<ContactCollection>("api/v1/contacts/", requestOptions: requestOptions,
+                args: new WebApiArg[0]);
         }
     }
 }

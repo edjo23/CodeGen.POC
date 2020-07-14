@@ -10,16 +10,22 @@ namespace {{ServiceAgentClass.Namespace}}
     {
         public {{ServiceAgentClass.Name}}(IOptionsMonitor<ServiceAgentOptions> namedOptionsAccessor)
             : base(namedOptionsAccessor.Get(typeof({{ServiceAgentClass.Name}}).FullName).HttpClient, namedOptionsAccessor.Get(nameof({{ServiceAgentClass.Name}})).BeforeRequest) { }
-
         {{#each ServiceAgentClass.Operations}}
-        {{#if IsGetColl}}
-        {{#unless HasPagingArgs}}
-        public async Task<WebApiAgentResult<{{ReturnType}}>> {{Name}}Async()
+        {{#if IsGet}}
+
+        public async Task<WebApiAgentResult<{{ReturnType}}>> {{Name}}Async({{#each Parameters}}{{Type}} {{Name}}, {{/each}}WebApiRequestOptions? requestOptions = null)
         {
-            return await base.GetAsync<{{ReturnType}}>("{{WebApiRoute}}", requestOptions: null,
-                args: Array.Empty<WebApiArg>());
+            return await base.GetAsync<{{ReturnType}}>("{{WebApiRoute}}", requestOptions: requestOptions,
+                args: new WebApiArg{{#each Parameters}}{{#if @first}}[] { {{/if}}new WebApiArg<{{Type}}>("{{Name}}", {{Name}}){{#unless @last}}, {{else}} }{{/unless}}{{else}}[0]{{/each}});
         }
-        {{/unless}}
+        {{/if}}
+        {{#if IsGetColl}}
+
+        public async Task<WebApiAgentResult<{{ReturnType}}>> {{Name}}Async({{#each Parameters}}{{Type}} {{Name}}, {{/each}}WebApiRequestOptions? requestOptions = null)
+        {
+            return await base.GetAsync<{{ReturnType}}>("{{WebApiRoute}}", requestOptions: requestOptions,
+                args: new WebApiArg{{#each Parameters}}{{#if @first}}[] { {{/if}}new WebApiArg<{{Type}}>("{{Name}}", {{Name}}){{#unless @last}}, {{else}} }{{/unless}}{{else}}[0]{{/each}});
+        }
         {{/if}}
         {{/each}}
     }

@@ -423,6 +423,12 @@ namespace CodeGen.Models
                 op.WebApiRoute = string.Join("/", new string[] { controllerClass.WebApiRoutePrefix, webOp.WebApiRoute }.Where(o => o != null));
                 op.HasPagingArgs = webOp.HasPagingArgs;
 
+                if (op.IsGetColl && o.PagingArgs)
+                {
+                    op.Parameters.Add(new OperationParameter { Name = "pagingArgs", Type = "PagingArgs?" });
+                    data.Usings.Add("Beef.Entities");
+                }
+
                 return op;
 
             }).ToList();

@@ -10,8 +10,6 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Demo.Service.IntTest
