@@ -63,15 +63,17 @@ namespace Demo.Service.IntTest
             where TAgent : WebApiServiceAgentBase
         {
             var httpClient = _waFactory.CreateClient();
-            return new AgentTester<TAgent>(httpClient);
+            return new AgentTester<TAgent>(httpClient, new NUnitTestContextLogger("AgentTester"));
         }
     }
 
     public class AgentTester<TAgent>
         where TAgent : WebApiServiceAgentBase
     {
-        public AgentTester(HttpClient httpClient)
+        public AgentTester(HttpClient httpClient, ILogger logger)
         {
+            _logger = logger;
+
             var sc = new ServiceCollection();
             sc.AddSingleton<TAgent>();
             sc.Configure<ServiceAgentOptions>(typeof(TAgent).FullName, options =>
@@ -81,6 +83,7 @@ namespace Demo.Service.IntTest
             _serviceProvider = sc.BuildServiceProvider();
         }
 
+        private ILogger _logger;
         private IServiceProvider _serviceProvider;
         private HttpStatusCode? _expectedStatusCode;
 
@@ -97,6 +100,8 @@ namespace Demo.Service.IntTest
             var task = invoke(Agent);
             task.Wait();
 
+            LogResult(task.Result);
+
             ResultCheck(task.Result);
 
             return task.Result;
@@ -106,6 +111,12 @@ namespace Demo.Service.IntTest
         {
             if (_expectedStatusCode != null)
                 Assert.AreEqual(_expectedStatusCode, result.StatusCode);
+        }
+
+        private void LogResult(WebApiAgentResult result)
+        {
+            _logger.LogInformation($"REQUEST{Environment.NewLine}{result.Request}");
+            _logger.LogInformation($"RESPONSE{Environment.NewLine}{result.Response}");
         }
     }
 }
