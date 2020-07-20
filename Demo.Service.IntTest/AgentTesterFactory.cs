@@ -2,10 +2,10 @@
 using Demo.Service.Common.ServiceAgents;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.StaticFiles.Infrastructure;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -33,6 +33,14 @@ namespace Demo.Service.IntTest
 
             Action<IWebHostBuilder> rootConfiguration = (whb) =>
             {
+                whb.ConfigureLogging(lb =>
+                {
+                    lb.ClearProviders();
+                    lb.AddNUnit();
+                    //lb.AddConsole(c => c.DisableColors = true);
+                    //lb.AddDebug();
+                });
+
                 whb.ConfigureAppConfiguration(cb =>
                 {
                     cb.AddInMemoryCollection(new Dictionary<string, string> { { "base-setting", "base-value" }, { "default-setting", "default-value" } });
@@ -86,11 +94,12 @@ namespace Demo.Service.IntTest
 
         public WebApiAgentResult<TResult> Run<TResult>(Func<TAgent, Task<WebApiAgentResult<TResult>>> invoke)
         {
-            var result = invoke(Agent).Result;
+            var task = invoke(Agent);
+            task.Wait();
 
-            ResultCheck(result);
+            ResultCheck(task.Result);
 
-            return result;
+            return task.Result;
         }
 
         protected void ResultCheck(WebApiAgentResult result)

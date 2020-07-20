@@ -39,6 +39,9 @@ namespace Demo.Service.IntTest
                 });
             });
 
+            var result = _defaultFactory.Create<PersonServiceAgent>()
+                .Run(o => o.GetAsync<object>("notfound"));
+
             _customFactory = new AgentTesterFactory<CustomWebApplicationFactory, Startup>();
         }
 
